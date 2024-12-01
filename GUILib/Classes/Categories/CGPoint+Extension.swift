@@ -28,9 +28,14 @@ import UIKit
  * ...
  * a == b
  */
-public func == (lhs: CGPoint, rhs: CGPoint) -> Bool {
-    return lhs.equalTo(rhs)
+
+func ==(lhs: CGPoint, rhs: CGPoint) -> Bool {
+    return lhs.distanceFrom(rhs) < 0.000001 // lhs.equalTo(rhs)
 }
+
+//public func == (lhs: CGPoint, rhs: CGPoint) -> Bool {
+//    return lhs.equalTo(rhs)
+//}
 
 /**
  * ...
@@ -224,9 +229,11 @@ public func max(maxa: CGPoint, maxb: CGPoint, rest: CGPoint...) -> CGPoint {
 }
 
 extension CGPoint: Hashable {
-    //    public var hashValue: Int {
-    //        return self.x.hashValue << MemoryLayout<CGFloat>.size ^ self.y.hashValue
-    //    }
+    public var hashValue: Int {
+        // iOS Swift Game Development Cookbook
+        // https://gist.github.com/FredrikSjoberg/ced4ad5103863ab95dc8b49bdfd99eb2
+        return x.hashValue << 32 ^ y.hashValue
+    }
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.x)
         hasher.combine(self.y)
@@ -270,5 +277,229 @@ public extension CGPoint {
             #endif
         }
         return newPoint
+    }
+}
+public extension CGPoint {
+    /// - returns: A `CGVector` with dx: x and dy: y.
+    var vector: CGVector {
+        return CGVector(dx: x, dy: y)
+    }
+    /// - returns: A `CGPoint` with rounded x and y values.
+    var rounded: CGPoint {
+        return CGPoint(x: round(x), y: round(y))
+    }
+    /// - returns: The Euclidean distance from self to the given point.
+    //    public func distance(to point: CGPoint) -> CGFloat {
+    //        return (point - self).magnitude
+    //    }
+    
+    /// Constrains the x and y value to within the provided rect.
+    //    public func clipped(to rect: CGRect) -> CGPoint {
+    //        return CGPoint(x: x.clipped(rect.minX, rect.maxX),
+    //            y: y.clipped(rect.minY, rect.maxY))
+    //    }
+    
+    /// - returns: The relative position inside the provided rect.
+    func position(in rect: CGRect) -> CGPoint {
+        return CGPoint(x: x - rect.origin.x,
+                       y: y - rect.origin.y)
+    }
+    /// - returns: The position inside the provided rect,
+    /// where horizontal and vertical position are normalized
+    /// (i.e. mapped to 0-1 range).
+    func normalizedPosition(in rect: CGRect) -> CGPoint {
+        let position = position(in: rect)
+        return CGPoint(x: (1.0 / rect.width) * position.x,
+                       y: (1.0 / rect.width) * position.y)
+    }
+    /// - returns: True if the line contains the point.
+    func isAt(line: [CGPoint]) -> Bool {
+        return line.contains(self)
+    }
+}
+public extension CGPoint {
+    func translate(_ originX: CGFloat, _ originY: CGFloat) -> CGPoint {
+        return CGPoint(x: self.x + originX, y: self.y + originY)
+    }
+    func translateX(_ originX: CGFloat) -> CGPoint {
+        return CGPoint(x: self.x + originX, y: self.y)
+    }
+    func translateY(_ originY: CGFloat) -> CGPoint {
+        return CGPoint(x: self.x, y: self.y + originY)
+    }
+    var invertY: CGPoint {
+        return CGPoint(x: self.x, y: -self.y)
+    }
+    var xAxis: CGPoint {
+        return CGPoint(x: 0, y: self.y)
+    }
+    var yAxis: CGPoint {
+        return CGPoint(x: self.x, y: 0)
+    }
+    func add(_ otherPoint: CGPoint) -> CGPoint {
+        return CGPoint(x: self.x + otherPoint.x, y: self.y + otherPoint.y)
+    }
+    func addScalar(_ scalar: CGFloat) -> CGPoint {
+        return CGPoint(x: self.x + scalar, y: self.y + scalar)
+    }
+    func sub(_ otherPoint: CGPoint) -> CGPoint {
+        return CGPoint(x: self.x - otherPoint.x, y: self.y - otherPoint.y)
+    }
+    func subScalar(_ value: CGFloat) -> CGPoint {
+        return CGPoint(x: self.x - value, y: self.y - value)
+    }
+    func deltaTo(_ value: CGPoint) -> CGPoint {
+        return CGPoint(x: self.x - value.x, y: self.y - value.y)
+    }
+    func multiplyBy(_ value: CGFloat) -> CGPoint {
+        return CGPoint(x: self.x * value, y: self.y * value)
+    }
+    func divByScalar(_ value: CGFloat) -> CGPoint {
+        return CGPoint(x: self.x / value, y: self.y / value)
+    }
+    var length: CGFloat {
+        return CGFloat(sqrt(CDouble(self.x*self.x + self.y*self.y)))
+    }
+    var normalize: CGPoint {
+        let length = self.length
+        return CGPoint(x: self.x / length, y: self.y / length)
+    }
+    static func fromString(_ string: String) -> CGPoint {
+        var result = string.replacingOccurrences(of: "{", with: "")
+        result = result.replacingOccurrences(of: "}", with: "")
+        result = result.replacingOccurrences(of: " ", with: "")
+        let originX = NSString(string: result.components(separatedBy: ",").first! as String).doubleValue
+        let originY = NSString(string: result.components(separatedBy: ",").last! as String).doubleValue
+        return CGPoint(x: CGFloat(originX), y: CGFloat(originY))
+    }
+    /// Get the mid point of the receiver with another passed point.
+    ///
+    /// - Parameter p2: other point.
+    /// - Returns: mid point.
+    func midPointForPointsTo(_ otherPoint: CGPoint) -> CGPoint {
+        return CGPoint(x: (x + otherPoint.x) / 2, y: (y + otherPoint.y) / 2)
+    }
+    /// Control point to another point from receiver.
+    ///
+    /// - Parameter p2: other point.
+    /// - Returns: control point for quad curve.
+    func controlPointToPoint(_ point2: CGPoint) -> CGPoint {
+        var controlPoint = self.midPointForPointsTo(point2)
+        let  diffY = abs(point2.y - controlPoint.y)
+        if self.y < point2.y {
+            controlPoint.y += diffY
+        } else if self.y > point2.y {
+            controlPoint.y -= diffY
+        }
+        return controlPoint
+    }
+    public func equalsTo(_ compare: Self) -> Bool {
+        return self.x == compare.x && self.y == compare.y
+    }
+    public func distanceFrom(_ otherPoint: Self) -> CGFloat {
+        let dxPoint = self.x - otherPoint.x
+        let dyPoint = self.y - otherPoint.y
+        return (dxPoint * dxPoint) + (dyPoint * dyPoint)
+    }
+    public func distance(from lhs: CGPoint) -> CGFloat {
+        return hypot(lhs.x.distance(to: self.x), lhs.y.distance(to: self.y))
+    }
+    public func distanceToSegment(_ p1Segment: CGPoint, _ p2Segment: CGPoint) -> Float {
+        var p1SegmentX = p1Segment.x
+        var p1SegmentY = p1Segment.y
+        var dxSegment = p2Segment.x - p1SegmentX
+        var dySegment = p2Segment.y - p1SegmentY
+        if dxSegment != 0 || dySegment != 0 {
+            let segmentT = ((self.x - p1SegmentX) * dxSegment + (self.y - p1SegmentY) * dySegment) / (dxSegment * dxSegment + dySegment * dySegment)
+            if segmentT > 1 {
+                p1SegmentX = p2Segment.x
+                p1SegmentY = p2Segment.y
+            } else if segmentT > 0 {
+                p1SegmentX += dxSegment * segmentT
+                p1SegmentY += dySegment * segmentT
+            }
+        }
+        dxSegment = self.x - p1SegmentX
+        dySegment = self.y - p1SegmentY
+        return Float(dxSegment * dxSegment + dySegment * dySegment)
+    }
+    func distanceToLine(from linePoint1: CGPoint, to linePoint2: CGPoint) -> CGFloat {
+        let dxLine = linePoint2.x - linePoint1.x
+        let dyLine = linePoint2.y - linePoint1.y
+        let dividend = abs(dyLine * self.x - dxLine * self.y - linePoint1.x * linePoint2.y + linePoint2.x * linePoint1.y)
+        let divisor = sqrt(dxLine * dxLine + dyLine * dyLine)
+        return dividend / divisor
+    }
+    /**
+     Averages the point with another.
+     - parameter point: The point to average with.
+     - returns: A point with an x and y equal to the average of this and the given point's x and y.
+     */
+    func average(with point: CGPoint) -> CGPoint {
+        return CGPoint(x: (x + point.x) * 0.5, y: (y + point.y) * 0.5)
+    }
+    /**
+     Calculates the difference in x and y between 2 points.
+     - parameter point: The point to calculate the difference to.
+     - returns: A point with an x and y equal to the difference between this and the given point's x and y.
+     */
+    func differential(to point: CGPoint) -> CGPoint {
+        return CGPoint(x: point.x - x, y: point.y - y)
+    }
+    /**
+     Calculates the distance between two points.
+     - parameter point: the point to calculate the distance to.
+     - returns: A CGFloat of the distance between the points.
+     */
+    func distance(to point: CGPoint) -> CGFloat {
+        return differential(to: point).hypotenuse
+    }
+    /**
+     Calculates the hypotenuse of the x and y component of a point.
+     - returns: A CGFloat for the hypotenuse of the point.
+     */
+    var hypotenuse: CGFloat {
+        return sqrt(x * x + y * y)
+    }
+    func slopeTo(_ point: CGPoint) -> CGFloat {
+        let delta = point.deltaTo(self)
+        return delta.y / delta.x
+    }
+    func addTo(_ point: CGPoint) -> CGPoint {
+        return CGPoint(x: self.x + point.x, y: self.y + point.y)
+    }
+    func absoluteDeltaY(_ point: CGPoint) -> Double {
+        return Double(abs(self.y - point.y))
+    }
+    func addX(_ value: CGFloat) -> CGPoint {
+        return CGPoint(x: self.x + value, y: self.y)
+    }
+    func belowLine(_ point1: CGPoint, point2: CGPoint) -> Bool {
+        guard point1.x != point2.x else { return self.y < point1.y && self.y < point2.y }
+        let point = point1.x < point2.x ? [point1, point2] : [point2, point1]
+        if self.x == point[0].x {
+            return self.y < point[0].y
+        } else if self.x == point[1].x {
+            return self.y < point[1].y
+        }
+        let delta = point[1].deltaTo(point[0])
+        let slope = delta.y / delta.x
+        let myDeltaX = self.x - point[0].x
+        let pointOnLineY = slope * myDeltaX + point[0].y
+        return self.y < pointOnLineY
+    }
+    func aboveLine(_ point1: CGPoint, point2: CGPoint) -> Bool {
+        guard point1.x != point2.x else { return self.y > point1.y && self.y > point2.y }
+        let point = point1.x < point2.x ? [point1, point2]: [point2, point1]
+        if self.x == point[0].x {
+            return self.y > point[0].y
+        } else if self.x == point[1].x {
+            return self.y > point[1].y
+        }
+        let delta = point[1].deltaTo(point[0])
+        let slope = delta.y / delta.x
+        let myDeltaX = self.x - point[0].x
+        let pointOnLineY = slope * myDeltaX + point[0].y
+        return self.y > pointOnLineY
     }
 }

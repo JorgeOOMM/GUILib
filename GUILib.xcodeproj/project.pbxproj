@@ -29,6 +29,13 @@
 		047B0A452CFC54C800F5C5CB /* Interpolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B0A332CFC54C800F5C5CB /* Interpolation.swift */; };
 		047B0A462CFC54C800F5C5CB /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B0A342CFC54C800F5C5CB /* Math.swift */; };
 		047B0A472CFC54C800F5C5CB /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B0A362CFC54C800F5C5CB /* Log.swift */; };
+		04B124A62CFC977000E49914 /* CAAnimation+Closure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124A32CFC977000E49914 /* CAAnimation+Closure.swift */; };
+		04B124A72CFC977000E49914 /* CALayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124A42CFC977000E49914 /* CALayer+Extensions.swift */; };
+		04B124A82CFC977000E49914 /* RecursiveProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124A52CFC977000E49914 /* RecursiveProtocol.swift */; };
+		04B124AD2CFC986000E49914 /* FloatPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124A92CFC986000E49914 /* FloatPoint+Extension.swift */; };
+		04B124AF2CFC986000E49914 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124AB2CFC986000E49914 /* Array+Extensions.swift */; };
+		04B124B02CFC986000E49914 /* CGPath+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124AC2CFC986000E49914 /* CGPath+Extension.swift */; };
+		04B124B42CFC9CBE00E49914 /* CGRect+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124B32CFC9CBE00E49914 /* CGRect+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +72,13 @@
 		047B0A332CFC54C800F5C5CB /* Interpolation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Interpolation.swift; sourceTree = "<group>"; };
 		047B0A342CFC54C800F5C5CB /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		047B0A362CFC54C800F5C5CB /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		04B124A32CFC977000E49914 /* CAAnimation+Closure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CAAnimation+Closure.swift"; sourceTree = "<group>"; };
+		04B124A42CFC977000E49914 /* CALayer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CALayer+Extensions.swift"; sourceTree = "<group>"; };
+		04B124A52CFC977000E49914 /* RecursiveProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecursiveProtocol.swift; sourceTree = "<group>"; };
+		04B124A92CFC986000E49914 /* FloatPoint+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FloatPoint+Extension.swift"; sourceTree = "<group>"; };
+		04B124AB2CFC986000E49914 /* Array+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		04B124AC2CFC986000E49914 /* CGPath+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPath+Extension.swift"; sourceTree = "<group>"; };
+		04B124B32CFC9CBE00E49914 /* CGRect+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +139,13 @@
 		047B0A312CFC54C800F5C5CB /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				04B124B32CFC9CBE00E49914 /* CGRect+Extensions.swift */,
+				04B124AB2CFC986000E49914 /* Array+Extensions.swift */,
+				04B124AC2CFC986000E49914 /* CGPath+Extension.swift */,
+				04B124A92CFC986000E49914 /* FloatPoint+Extension.swift */,
+				04B124A32CFC977000E49914 /* CAAnimation+Closure.swift */,
+				04B124A42CFC977000E49914 /* CALayer+Extensions.swift */,
+				04B124A52CFC977000E49914 /* RecursiveProtocol.swift */,
 				0456A31E2CFC88CF00EDA890 /* UIBezierPath+Polygon.swift */,
 				047B0A252CFC54C800F5C5CB /* CALayer+AnimationKeyPath.swift */,
 				047B0A262CFC54C800F5C5CB /* CGAffineTransform+Extensions.swift */,
@@ -294,10 +315,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04B124A82CFC977000E49914 /* RecursiveProtocol.swift in Sources */,
+				04B124AD2CFC986000E49914 /* FloatPoint+Extension.swift in Sources */,
 				047B0A442CFC54C800F5C5CB /* Easing.swift in Sources */,
 				047B0A402CFC54C800F5C5CB /* Float+Extensions.swift in Sources */,
+				04B124B02CFC986000E49914 /* CGPath+Extension.swift in Sources */,
 				047B0A3C2CFC54C800F5C5CB /* CGFloat+Math.swift in Sources */,
 				047B0A412CFC54C800F5C5CB /* Float+Math.swift in Sources */,
+				04B124AF2CFC986000E49914 /* Array+Extensions.swift in Sources */,
+				04B124A62CFC977000E49914 /* CAAnimation+Closure.swift in Sources */,
 				047B0A3A2CFC54C800F5C5CB /* CGColorSpace+Extension.swift in Sources */,
 				047B0A452CFC54C800F5C5CB /* Interpolation.swift in Sources */,
 				047B0A3B2CFC54C800F5C5CB /* CGFloat+Extensions.swift in Sources */,
@@ -307,10 +333,12 @@
 				047B0A422CFC54C800F5C5CB /* UIColor+Extensions.swift in Sources */,
 				047B0A392CFC54C800F5C5CB /* CGAffineTransform+Extensions.swift in Sources */,
 				0456A31F2CFC88CF00EDA890 /* UIBezierPath+Polygon.swift in Sources */,
+				04B124B42CFC9CBE00E49914 /* CGRect+Extensions.swift in Sources */,
 				047B0A3E2CFC54C800F5C5CB /* CGSize+Math.swift in Sources */,
 				047B0A432CFC54C800F5C5CB /* UIColor+Interpolation.swift in Sources */,
 				047B0A3F2CFC54C800F5C5CB /* Double+Math.swift in Sources */,
 				047B0A382CFC54C800F5C5CB /* CALayer+AnimationKeyPath.swift in Sources */,
+				04B124A72CFC977000E49914 /* CALayer+Extensions.swift in Sources */,
 				0456A3212CFC88D900EDA890 /* Compatibility.swift in Sources */,
 				047B0A462CFC54C800F5C5CB /* Math.swift in Sources */,
 			);
@@ -464,6 +492,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -497,6 +526,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;

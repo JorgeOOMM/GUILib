@@ -46,7 +46,6 @@ public extension UIColor {
         let lumaGreen = 0.7152 * Float(comp[1])
         let lumaBlue  = 0.0722 * Float(comp[2])
         let luma      = Float(lumaRed + lumaGreen + lumaBlue)
-        
         return CGFloat(luma * Float(components[3]))
     }
     var luminance: CGFloat {
@@ -55,11 +54,46 @@ public extension UIColor {
         let fmax = max(max(comp[0],comp[1]),comp[2])
         return (fmax + fmin) / 2.0
     }
-    var isLight: Bool {
+    var isLightLuma: Bool {
         return self.luma >= kLuminanceDarkCutoff
     }
-    var isDark: Bool {
+    var isDarkLuma: Bool {
         return self.luma < kLuminanceDarkCutoff
+    }
+    var isLight: Bool {
+        return !(brightness < 0.5)
+    }
+    var isDark: Bool {
+        return (brightness < 0.5)
+    }
+    var brightness: CGFloat {
+        guard let components = cgColor.components,
+            components.count >= 3 else { return 0 }
+        let brightness = ((components[0] * 299) + (components[1] * 587) + (components[2] * 114)) / 1000
+        return brightness
+    }
+    var complementaryColor: UIColor {
+        if #available(iOS 13, tvOS 13, *) {
+            return UIColor { traitCollection in
+                return self.isLight ? self.darker : self.lighter
+            }
+        } else {
+            return isLight ? darker : lighter
+        }
+    }
+    var lighter: UIColor {
+        return adjust(by: 1.35)
+    }
+    var darker: UIColor {
+        return adjust(by: 0.94)
+    }
+    func adjust(by percent: CGFloat) -> UIColor {
+        var hcomponent: CGFloat = 0, scomponent: CGFloat = 0, bcomponent: CGFloat = 0, acomponent: CGFloat = 0
+        getHue(&hcomponent, saturation: &scomponent, brightness: &bcomponent, alpha: &acomponent)
+        return UIColor(hue: hcomponent, saturation: scomponent, brightness: bcomponent * percent, alpha: acomponent)
+    }
+    func makeGradient() -> [UIColor] {
+        return [self, self.complementaryColor, self]
     }
 }
 public extension UIColor {
@@ -273,10 +307,10 @@ public extension UIColor {
 /// Random RGBA
 
 public extension UIColor {
-    class public func random() -> UIColor? {
-        return UIColor(red: CGFloat(drand48()),
-                       green: CGFloat(drand48()),
-                       blue: CGFloat(drand48()),
+    class func random() -> UIColor? {
+        return UIColor(red: CGFloat.random(in: 0..<1),
+                       green: CGFloat.random(in: 0..<1),
+                       blue: CGFloat.random(in: 0..<1),
                        alpha: 1.0)
     }
 }
@@ -291,17 +325,14 @@ public extension UIColor {
     /// - returns: UIColor array
     
     
-    class public func rainbow(_ numberOfSteps:Int, hue:Double = 0.0) -> [UIColor]!{
-        
+    class func rainbow(_ numberOfSteps: Int, hue:Double = 0.0) -> [UIColor]!{
         var colors:[UIColor] = []
-        
         let iNumberOfSteps =  1.0 / Double(numberOfSteps)
         var hue:Double = hue
         while hue < 1.0 {
             if colors.count == numberOfSteps {
                 break
             }
-            
             let color = UIColor(hue: CGFloat(hue),
                                 saturation: CGFloat(1.0),
                                 brightness: CGFloat(1.0),
@@ -310,9 +341,7 @@ public extension UIColor {
             colors.append(color)
             hue += iNumberOfSteps
         }
-        
         // assert(colors.count == numberOfSteps, "Unexpected number of rainbow colors \(colors.count). Expecting \(numberOfSteps)")
-        
         return colors
     }
 }
