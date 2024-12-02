@@ -393,18 +393,18 @@ public extension CGPoint {
         }
         return controlPoint
     }
-    public func equalsTo(_ compare: Self) -> Bool {
+    func equalsTo(_ compare: Self) -> Bool {
         return self.x == compare.x && self.y == compare.y
     }
-    public func distanceFrom(_ otherPoint: Self) -> CGFloat {
+    func distanceFrom(_ otherPoint: Self) -> CGFloat {
         let dxPoint = self.x - otherPoint.x
         let dyPoint = self.y - otherPoint.y
         return (dxPoint * dxPoint) + (dyPoint * dyPoint)
     }
-    public func distance(from lhs: CGPoint) -> CGFloat {
+    func distance(from lhs: CGPoint) -> CGFloat {
         return hypot(lhs.x.distance(to: self.x), lhs.y.distance(to: self.y))
     }
-    public func distanceToSegment(_ p1Segment: CGPoint, _ p2Segment: CGPoint) -> Float {
+    func distanceToSegment(_ p1Segment: CGPoint, _ p2Segment: CGPoint) -> Float {
         var p1SegmentX = p1Segment.x
         var p1SegmentY = p1Segment.y
         var dxSegment = p2Segment.x - p1SegmentX

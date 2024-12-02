@@ -9,6 +9,23 @@ import UIKit
 
 
 public extension CALayer {
+    static var isAnimatingLayers: Int = 0
+    func add(_ anim: CAAnimation,
+             forKey key: String?,
+             withCompletion completion: ((Bool) -> Void)?) {
+        CALayer.isAnimatingLayers += 1
+        anim.completion = {  complete in
+            completion?(complete)
+            if complete {
+                CALayer.isAnimatingLayers -= 1
+            }
+        }
+        add(anim, forKey: key)
+    }
+}
+
+
+public extension CALayer {
     typealias LayerAnimation = (CALayer) -> CAAnimation
     
     var isModel: Bool {
