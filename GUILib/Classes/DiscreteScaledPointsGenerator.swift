@@ -30,7 +30,7 @@ public protocol ScaledPointsGeneratorProtocol {
     var hScale: CGFloat {get}
     var isLimitsDirty: Bool {get set}
     
-    func makePoints(data: [Float], size: CGSize) -> [CGPoint]
+    func makePoints(data: [Float], size: CGSize, updateLimits: Bool) -> [CGPoint]
     func updateRangeLimits(_ data: [Float])
 }
 
@@ -80,8 +80,8 @@ public class DiscreteScaledPointsGenerator: ScaledPointsGeneratorProtocol {
         maximumValue = max
         isLimitsDirty = false
     }
-    public func makePoints(data: [Float], size: CGSize) -> [CGPoint] {
-        if isLimitsDirty {
+    public func makePoints(data: [Float], size: CGSize, updateLimits: Bool = false) -> [CGPoint] {
+        if isLimitsDirty || updateLimits {
             updateRangeLimits(data)
         }
         // claculate the size

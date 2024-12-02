@@ -57,12 +57,12 @@ class Interpolation {
     ///  a2 = -0.5*y0 + 0.5*y2;
     ///  a3 = y1;
     
-    class func cubicerp(_ cubicerpy0:CGFloat,cubicerpy1:CGFloat,cubicerpy2:CGFloat,cubicerpy3:CGFloat,alpha:CGFloat) -> CGFloat {
-        var cubicerpa0:CGFloat
-        var cubicerpa1:CGFloat
-        var cubicerpa2:CGFloat
-        var cubicerpa3:CGFloat
-        var cubicerpt2:CGFloat
+    class func cubicerp(_ cubicerpy0: CGFloat,cubicerpy1: CGFloat,cubicerpy2: CGFloat,cubicerpy3: CGFloat,alpha: CGFloat) -> CGFloat {
+        var cubicerpa0: CGFloat
+        var cubicerpa1: CGFloat
+        var cubicerpa2: CGFloat
+        var cubicerpa3: CGFloat
+        var cubicerpt2: CGFloat
         
         assert(alpha >= 0.0 && alpha <= 1.0)
         
@@ -83,7 +83,7 @@ class Interpolation {
     ///   - alpha: alpha
     /// - Returns: the interpolate value
 
-    class func eerp(_ eerpy0:CGFloat,eerpy1:CGFloat,alpha:CGFloat) -> CGFloat {
+    class func eerp(_ eerpy0: CGFloat,eerpy1: CGFloat,alpha: CGFloat) -> CGFloat {
         assert(alpha >= 0.0 && alpha <= 1.0)
         let end    = log(max(Double(eerpy0), 0.01))
         let start  = log(max(Double(eerpy1), 0.01))
@@ -107,7 +107,7 @@ class Interpolation {
     ///  Precise method which guarantees v = v1 when alpha = 1.
     ///  (1-alpha)*v0 + alpha*v1;
     
-    class func lerp(_ lerpy0:CGFloat,lerpy1:CGFloat,alpha:CGFloat) -> CGFloat {
+    class func lerp(_ lerpy0: CGFloat,lerpy1: CGFloat,alpha: CGFloat) -> CGFloat {
         assert(alpha >= 0.0 && alpha <= 1.0)
         let inverse = 1.0 - alpha
         return inverse * lerpy0 + alpha * lerpy1
@@ -124,7 +124,7 @@ class Interpolation {
     ///   - t2: alpha
     /// - Returns: the interpolate value
     
-    class func bilerp(_ bilerpy0:CGFloat,bilerpy1:CGFloat,bilerpt1:CGFloat,bilerpy2:CGFloat,bilerpy3:CGFloat,bilerpt2:CGFloat) -> CGFloat {
+    class func bilerp(_ bilerpy0: CGFloat,bilerpy1: CGFloat,bilerpt1: CGFloat,bilerpy2: CGFloat,bilerpy3: CGFloat,bilerpt2: CGFloat) -> CGFloat {
         assert(bilerpt1 >= 0.0 && bilerpt1 <= 1.0)
         assert(bilerpt2 >= 0.0 && bilerpt2 <= 1.0)
         return lerp(lerp(bilerpy0, lerpy1: bilerpy1, alpha: bilerpt1), lerpy1: lerp(bilerpy2, lerpy1: bilerpy3, alpha: bilerpt2), alpha: 0.5)
@@ -138,7 +138,7 @@ class Interpolation {
     ///   - alpha: alpha
     /// - Returns: the interpolate value
     
-    class func coserp(_ coserpy0:CGFloat,coserpy1:CGFloat,alpha:CGFloat) -> CGFloat {
+    class func coserp(_ coserpy0: CGFloat,coserpy1: CGFloat,alpha: CGFloat) -> CGFloat {
         assert(alpha >= 0.0 && alpha <= 1.0)
         let mu2 = CGFloat(1.0-cos(Double(alpha) * .pi))/2
         return (coserpy0*(1.0-mu2)+coserpy1*mu2)

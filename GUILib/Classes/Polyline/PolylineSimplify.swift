@@ -164,7 +164,6 @@ open class PolylineSimplify {
         }
         let squareTolerance = (tolerance != nil ? tolerance! * tolerance! : 1.0)
         var result: [T] = (highQuality == true ? points : simplifyRadialDistance(points, tolerance: squareTolerance))
-        result = simplifyDouglasPeucker(result, tolerance: squareTolerance)
-        return result
+        return simplifyDouglasPeucker(result, tolerance: squareTolerance)
     }
 }

@@ -80,6 +80,15 @@ class CubicCurveAlgorithm {
         return []
     }
     
+    /// Thomas TridiagonalM atrix Algorithm
+    /// - Parameters:
+    ///   - bdSide: [CGFloat]
+    ///   - dSide: [CGFloat]
+    ///   - adSide: [CGFloat]
+    ///   - rhsArray: [CGFloat]
+    ///   - segments: Number of segments
+    ///   - data: [CGPoint]
+    /// - Returns: [CubicCurveSegment]
     internal func thomasTridiagonalMatrixAlgorithm(bdSide: [CGFloat],
                                                    dSide: [CGFloat],
                                                    adSide: [CGFloat],

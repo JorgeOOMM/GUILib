@@ -45,6 +45,7 @@
 		04B124CE2CFCB62400E49914 /* DiscreteScaledPointsGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124CD2CFCB62400E49914 /* DiscreteScaledPointsGenerator.swift */; };
 		04B124D22CFCDB1C00E49914 /* PolylineSimplify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124D12CFCDB1C00E49914 /* PolylineSimplify.swift */; };
 		04B124D42CFCDF3D00E49914 /* test-data.json in Resources */ = {isa = PBXBuildFile; fileRef = 04B124D32CFCDF3D00E49914 /* test-data.json */; };
+		04B124DC2CFE115100E49914 /* Stadistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124DB2CFE115100E49914 /* Stadistics.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,7 @@
 		04B124CD2CFCB62400E49914 /* DiscreteScaledPointsGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscreteScaledPointsGenerator.swift; sourceTree = "<group>"; };
 		04B124D12CFCDB1C00E49914 /* PolylineSimplify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolylineSimplify.swift; sourceTree = "<group>"; };
 		04B124D32CFCDF3D00E49914 /* test-data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "test-data.json"; sourceTree = "<group>"; };
+		04B124DB2CFE115100E49914 /* Stadistics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stadistics.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 		047B0A352CFC54C800F5C5CB /* Math */ = {
 			isa = PBXGroup;
 			children = (
+				04B124DB2CFE115100E49914 /* Stadistics.swift */,
 				047B0A322CFC54C800F5C5CB /* Easing.swift */,
 				047B0A332CFC54C800F5C5CB /* Interpolation.swift */,
 				047B0A342CFC54C800F5C5CB /* Math.swift */,
@@ -385,6 +388,7 @@
 				047B0A452CFC54C800F5C5CB /* Interpolation.swift in Sources */,
 				04B124BA2CFCA87000E49914 /* PathAnimation.swift in Sources */,
 				047B0A3B2CFC54C800F5C5CB /* CGFloat+Extensions.swift in Sources */,
+				04B124DC2CFE115100E49914 /* Stadistics.swift in Sources */,
 				047B0A102CFC547D00F5C5CB /* GUILib.docc in Sources */,
 				047B0A472CFC54C800F5C5CB /* Log.swift in Sources */,
 				047B0A3D2CFC54C800F5C5CB /* CGPoint+Extension.swift in Sources */,

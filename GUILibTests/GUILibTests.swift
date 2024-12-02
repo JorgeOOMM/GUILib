@@ -7,7 +7,8 @@
 
 import XCTest
 @testable import GUILib
-func randomNumber(probabilities: [Double]) -> Int {
+// Helpers
+fileprivate func randomNumber(probabilities: [Double]) -> Int {
     // Sum of all probabilities (so that we don't have to require that the sum is 1.0):
     let sum = probabilities.reduce(0, +)
     // Random number in the range 0.0 <= rnd < sum :
@@ -38,24 +39,45 @@ fileprivate extension FloatingPoint {
     }
 }
 
-final class GUILibTests: XCTestCase {
-    fileprivate var points: [CGPoint] = []
-    override func setUpWithError() throws {
-        let testDataPath = Bundle(for: type(of: self)).path(forResource: "test-data", ofType: "json")
-        guard let testData = try? Data(contentsOf: URL(fileURLWithPath: testDataPath!), options: []) else {
-            return
-        }
-        let testDataObj: AnyObject? = try? JSONSerialization.jsonObject(with: testData, 
-                                                                        options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
-        if let testDataObj = testDataObj as? NSArray {
-            for idx in 0 ..< testDataObj.count {
-                if let itemDict = testDataObj[idx] as? NSDictionary {
-                    if let itemDictX = itemDict["x"] as? NSNumber, let itemDictY = itemDict["y"] as? NSNumber {
-                        points.append( CGPoint( x: CGFloat(itemDictX.floatValue), y: CGFloat(itemDictY.floatValue)) )
-                    }
+fileprivate func randomSize(bounded bounds: CGRect,
+                            numberOfItems: Int) -> [CGSize] {
+    let randomSizes  = (0..<numberOfItems).map {
+        _ in CGSize(width: .random(min: 0, max: bounds.size.width),
+                    height: .random(min: 0, max: bounds.size.height))
+    }
+    return randomSizes
+}
+fileprivate func randomFloat(_ numberOfItems: Int, min: Float = 0, max: Float = 100000) -> [Float] {
+    let randomData = (0..<numberOfItems).map { _ in Float.random(min: min, max: max) }
+    return randomData
+}
+
+fileprivate func loadPointsFromJSON(from bundle:Bundle, fileName: String) -> [CGPoint] {
+    var points: [CGPoint] = []
+    let testDataPath = bundle.path(forResource: fileName, ofType: "json")
+    guard let testData = try? Data(contentsOf: URL(fileURLWithPath: testDataPath!), options: []) else {
+        return []
+    }
+    let testDataObj: AnyObject? = try? JSONSerialization.jsonObject(with: testData,
+                                                                    options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
+    if let testDataObj = testDataObj as? NSArray {
+        for idx in 0 ..< testDataObj.count {
+            if let itemDict = testDataObj[idx] as? NSDictionary {
+                if let itemDictX = itemDict["x"] as? NSNumber, let itemDictY = itemDict["y"] as? NSNumber {
+                    points.append( CGPoint( x: CGFloat(itemDictX.floatValue), y: CGFloat(itemDictY.floatValue)) )
                 }
             }
         }
+    }
+    
+    return points
+}
+
+final class GUILibTests: XCTestCase {
+    fileprivate var points: [CGPoint] = []
+    
+    override func setUpWithError() throws {
+        self.points = loadPointsFromJSON(from: Bundle(for: type(of: self)), fileName: "test-data")
     }
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -100,56 +122,91 @@ final class GUILibTests: XCTestCase {
         XCTAssertEqual(CGSize(width: 100, height: 90) / CGPoint(x: 10, y: 20),
                        CGSize(width: 10.0, height: 4.5))
     }
-
-    
-    func randomSize(bounded bounds: CGRect,
-                    numberOfItems: Int) -> [CGSize] {
-        let randomSizes  = (0..<numberOfItems).map {
-            _ in CGSize(width: .random(min: 0, max: bounds.size.width), 
-                        height: .random(min: 0, max: bounds.size.height))
-        }
-        return randomSizes
-    }
-    func randomFloat(_ numberOfItems: Int, min: Float = 0, max: Float = 100000) -> [Float] {
-        let randomData = (0..<numberOfItems).map { _ in Float.random(min: min, max: max) }
-        return randomData
-    }
     func testScaledPointsGenerator() {
         let numberOfItems = 300
         let sizes = randomSize(bounded: UIScreen.main.bounds, numberOfItems: numberOfItems)
+        let scaler  = DiscreteScaledPointsGenerator()
+        let randomData = randomFloat(numberOfItems)
         for size in sizes {
-            let randomData = randomFloat(numberOfItems)
             let scaler2 = ScaledPointsGenerator(randomData, size: size, insets: .zero)
-            let scaler  = DiscreteScaledPointsGenerator()
-            let points  = scaler.makePoints(data: randomData, size: size)
+            let points  = scaler.makePoints(data: randomData, size: size, updateLimits: true)
             let result = points.map { CGRect(origin: .zero, size: size).contains($0) }
             let points2 = scaler2.makePoints()
             let result2 = points2.map { CGRect(origin: .zero, size: size).contains($0) }
-            XCTAssert(points == points2)
-            XCTAssert(result == result2)
+            XCTAssert(points == points2, "ScaledPointsGenerator points")
+            XCTAssert(result == result2, "ScaledPointsGenerator bounds")
         }
     }
-    
+    // Test the PolylineSimplify core class
     func testSimplify() {
         let result0 = PolylineSimplify.simplify(self.points, tolerance: Float(0))
-        XCTAssert(result0.count == 36861)
+        XCTAssertEqual(result0.count, 36861, "PolylineSimplify.simplify tolerance (0)")
         let result1 = PolylineSimplify.simplify(self.points, tolerance: Float(0.1))
-        XCTAssert(result1.count == 1014)
+        XCTAssertEqual(result1.count, 1014, "PolylineSimplify.simplify tolerance (0.1)")
         let result2 =  PolylineSimplify.simplify(self.points, tolerance: Float(0.5))
-        XCTAssert(result2.count == 243)
+        XCTAssertEqual(result2.count, 243, "PolylineSimplify.simplify tolerance (0.5)")
         let result3 =  PolylineSimplify.simplify(self.points, tolerance: Float(1.0))
-        XCTAssert(result3.count == 129)
+        XCTAssertEqual(result3.count, 129, "PolylineSimplify.simplify tolerance (1.0)")
         let result4 =  PolylineSimplify.simplify(self.points, tolerance: Float(2.0))
-        XCTAssert(result4.count == 64)
+        XCTAssertEqual(result4.count, 64, "PolylineSimplify.simplify tolerance (2.0)")
         let result5 =  PolylineSimplify.simplify(self.points, tolerance: Float(4.0))
-        XCTAssert(result5.count == 37)
+        XCTAssertEqual(result5.count, 37, "PolylineSimplify.simplify tolerance (4.0)")
         let result6 =  PolylineSimplify.simplify(self.points, tolerance: Float(5.0))
-        XCTAssert(result6.count == 30)
+        XCTAssertEqual(result6.count, 30, "PolylineSimplify.simplify tolerance (5.0)")
     }
-//    func testPerformanceExample() throws {
-//        // This is an example of a performance test case.
-//        self.measure {
-//            // Put the code you want to measure the time of here.
-//        }
-//    }
+    // Test the Interpolation core class
+    func testInterpolation() {
+        let var1 = 0.5, var2 = 0.5, var3 = 0.5, var4 = 0.5, var5 = 0.5, var6 = 0.5
+        // Alpha 0.5
+        var alpha = 0.5
+        var lerp = Interpolation.lerp(var1, lerpy1: var2, alpha: alpha)
+        var coserp = Interpolation.coserp(var1, coserpy1: var2, alpha: alpha)
+        var cubicerp = Interpolation.cubicerp(var1, cubicerpy1: var2, cubicerpy2: var3, cubicerpy3: var4, alpha: alpha)
+        var eerp = Interpolation.eerp(var1, eerpy1: var2, alpha: alpha)
+        var bilerp = Interpolation.bilerp(var1,
+                                          bilerpy1: var2,
+                                          bilerpt1: var3,
+                                          bilerpy2: var4,
+                                          bilerpy3: var5,
+                                          bilerpt2: var6)
+        XCTAssertEqual(lerp, 0.5, "lerp Interpolation (alpha 0.5)")
+        XCTAssertEqual(coserp, 0.5, "coserp Interpolation (alpha 0.5)")
+        XCTAssertEqual(cubicerp, 0.5, "cubicerp Interpolation (alpha 0.5)")
+        XCTAssertEqual(bilerp, 0.5, "bilerp Interpolation (alpha 0.5)")
+        XCTAssertEqual(eerp, 1.0, "eerp Interpolation (alpha 0.5)")
+        // Alpha 1.0
+        alpha = 1.0
+        lerp = Interpolation.lerp(var1, lerpy1: var2, alpha: alpha)
+        coserp = Interpolation.coserp(var1, coserpy1: var2, alpha: alpha)
+        cubicerp = Interpolation.cubicerp(var1, cubicerpy1: var2, cubicerpy2: var3, cubicerpy3: var4, alpha: alpha)
+        eerp = Interpolation.eerp(var1, eerpy1: var2, alpha: alpha)
+        bilerp = Interpolation.bilerp(var1,
+                                      bilerpy1: var2,
+                                      bilerpt1: var3,
+                                      bilerpy2: var4,
+                                      bilerpy3: var5,
+                                      bilerpt2: var6)
+        XCTAssertEqual(lerp, 0.5, "lerp Interpolation (alpha 1.0)")
+        XCTAssertEqual(coserp, 0.5, "coserp Interpolation  (alpha 1.0)")
+        XCTAssertEqual(cubicerp, 0.5, "cubicerp Interpolation (alpha 1.0)")
+        XCTAssertEqual(bilerp, 0.5, "bilerp Interpolation  (alpha 1.0)")
+        XCTAssertEqual(eerp, 2.0, "eerp Interpolation (alpha 1.0)")
+        // Alpha 0
+        alpha = 0
+        lerp = Interpolation.lerp(var1, lerpy1: var2, alpha: alpha)
+        coserp = Interpolation.coserp(var1, coserpy1: var2, alpha: alpha)
+        cubicerp = Interpolation.cubicerp(var1, cubicerpy1: var2, cubicerpy2: var3, cubicerpy3: var4, alpha: alpha)
+        eerp = Interpolation.eerp(var1, eerpy1: var2, alpha: alpha)
+        bilerp = Interpolation.bilerp(var1,
+                                      bilerpy1: var2,
+                                      bilerpt1: var3,
+                                      bilerpy2: var4,
+                                      bilerpy3: var5,
+                                      bilerpt2: var6)
+        XCTAssertEqual(lerp, 0.5, "lerp Interpolation (alpha 0)")
+        XCTAssertEqual(coserp, 0.5, "coserp Interpolation (alpha 0)")
+        XCTAssertEqual(cubicerp, 0.5, "cubicerp Interpolation (alpha 0)")
+        XCTAssertEqual(bilerp, 0.5, "bilerp Interpolation (alpha 0)")
+        XCTAssertEqual(eerp, 0.5, "eerp Interpolation (alpha 0)")
+    }
 }
