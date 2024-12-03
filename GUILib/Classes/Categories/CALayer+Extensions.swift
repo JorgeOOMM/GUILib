@@ -9,6 +9,18 @@ import UIKit
 
 
 public extension CALayer {
+    func setGlow(with color: UIColor) {
+        masksToBounds = false
+        shadowColor =  color.cgColor
+        shadowOpacity = 1
+        shadowRadius  = 4.0
+        shadowOpacity = 0.9
+        shadowOffset  = CGSize(width: 0,height: 3)
+    }
+}
+
+
+public extension CALayer {
     static var isAnimatingLayers: Int = 0
     func add(_ anim: CAAnimation,
              forKey key: String?,

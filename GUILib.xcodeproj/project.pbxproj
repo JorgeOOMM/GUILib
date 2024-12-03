@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0456A31F2CFC88CF00EDA890 /* UIBezierPath+Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0456A31E2CFC88CF00EDA890 /* UIBezierPath+Polygon.swift */; };
 		0456A3212CFC88D900EDA890 /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0456A3202CFC88D900EDA890 /* Compatibility.swift */; };
+		0456CB0E2CFE24F0003384B3 /* CATransaction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0456CB0D2CFE24F0003384B3 /* CATransaction+Extensions.swift */; };
+		0456CB122CFF9EC2003384B3 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0456CB112CFF9EC2003384B3 /* Date+Extensions.swift */; };
 		047B0A102CFC547D00F5C5CB /* GUILib.docc in Sources */ = {isa = PBXBuildFile; fileRef = 047B0A0F2CFC547D00F5C5CB /* GUILib.docc */; };
 		047B0A162CFC547D00F5C5CB /* GUILib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 047B0A0B2CFC547D00F5C5CB /* GUILib.framework */; };
 		047B0A1B2CFC547D00F5C5CB /* GUILibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B0A1A2CFC547D00F5C5CB /* GUILibTests.swift */; };
@@ -34,7 +36,7 @@
 		04B124A82CFC977000E49914 /* RecursiveProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124A52CFC977000E49914 /* RecursiveProtocol.swift */; };
 		04B124AD2CFC986000E49914 /* FloatPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124A92CFC986000E49914 /* FloatPoint+Extension.swift */; };
 		04B124AF2CFC986000E49914 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124AB2CFC986000E49914 /* Array+Extensions.swift */; };
-		04B124B02CFC986000E49914 /* CGPath+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124AC2CFC986000E49914 /* CGPath+Extension.swift */; };
+		04B124B02CFC986000E49914 /* CGPath+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124AC2CFC986000E49914 /* CGPath+Extensions.swift */; };
 		04B124B42CFC9CBE00E49914 /* CGRect+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124B32CFC9CBE00E49914 /* CGRect+Extensions.swift */; };
 		04B124B92CFCA87000E49914 /* Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124B52CFCA87000E49914 /* Path.swift */; };
 		04B124BA2CFCA87000E49914 /* PathAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124B62CFCA87000E49914 /* PathAnimation.swift */; };
@@ -61,6 +63,8 @@
 /* Begin PBXFileReference section */
 		0456A31E2CFC88CF00EDA890 /* UIBezierPath+Polygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+Polygon.swift"; sourceTree = "<group>"; };
 		0456A3202CFC88D900EDA890 /* Compatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compatibility.swift; sourceTree = "<group>"; };
+		0456CB0D2CFE24F0003384B3 /* CATransaction+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CATransaction+Extensions.swift"; sourceTree = "<group>"; };
+		0456CB112CFF9EC2003384B3 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		047B0A0B2CFC547D00F5C5CB /* GUILib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GUILib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		047B0A0E2CFC547D00F5C5CB /* GUILib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GUILib.h; sourceTree = "<group>"; };
 		047B0A0F2CFC547D00F5C5CB /* GUILib.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = GUILib.docc; sourceTree = "<group>"; };
@@ -87,7 +91,7 @@
 		04B124A52CFC977000E49914 /* RecursiveProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecursiveProtocol.swift; sourceTree = "<group>"; };
 		04B124A92CFC986000E49914 /* FloatPoint+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FloatPoint+Extension.swift"; sourceTree = "<group>"; };
 		04B124AB2CFC986000E49914 /* Array+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
-		04B124AC2CFC986000E49914 /* CGPath+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPath+Extension.swift"; sourceTree = "<group>"; };
+		04B124AC2CFC986000E49914 /* CGPath+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPath+Extensions.swift"; sourceTree = "<group>"; };
 		04B124B32CFC9CBE00E49914 /* CGRect+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Extensions.swift"; sourceTree = "<group>"; };
 		04B124B52CFCA87000E49914 /* Path.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Path.swift; sourceTree = "<group>"; };
 		04B124B62CFCA87000E49914 /* PathAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathAnimation.swift; sourceTree = "<group>"; };
@@ -163,7 +167,9 @@
 				04B124BC2CFCAA0600E49914 /* UIBezierPath+Interpolation.swift */,
 				04B124B32CFC9CBE00E49914 /* CGRect+Extensions.swift */,
 				04B124AB2CFC986000E49914 /* Array+Extensions.swift */,
-				04B124AC2CFC986000E49914 /* CGPath+Extension.swift */,
+				04B124AC2CFC986000E49914 /* CGPath+Extensions.swift */,
+				0456CB112CFF9EC2003384B3 /* Date+Extensions.swift */,
+				0456CB0D2CFE24F0003384B3 /* CATransaction+Extensions.swift */,
 				04B124A92CFC986000E49914 /* FloatPoint+Extension.swift */,
 				04B124A32CFC977000E49914 /* CAAnimation+Closure.swift */,
 				04B124A42CFC977000E49914 /* CALayer+Extensions.swift */,
@@ -370,6 +376,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0456CB0E2CFE24F0003384B3 /* CATransaction+Extensions.swift in Sources */,
 				04B124BB2CFCA87000E49914 /* PathElement.swift in Sources */,
 				04B124A82CFC977000E49914 /* RecursiveProtocol.swift in Sources */,
 				04B124AD2CFC986000E49914 /* FloatPoint+Extension.swift in Sources */,
@@ -377,10 +384,11 @@
 				04B124C92CFCB1BB00E49914 /* PolyLineInterpolation.swift in Sources */,
 				04B124CE2CFCB62400E49914 /* DiscreteScaledPointsGenerator.swift in Sources */,
 				047B0A402CFC54C800F5C5CB /* Float+Extensions.swift in Sources */,
-				04B124B02CFC986000E49914 /* CGPath+Extension.swift in Sources */,
+				04B124B02CFC986000E49914 /* CGPath+Extensions.swift in Sources */,
 				04B124C82CFCB1BB00E49914 /* CubicCurveAlgorithm.swift in Sources */,
 				047B0A3C2CFC54C800F5C5CB /* CGFloat+Math.swift in Sources */,
 				047B0A412CFC54C800F5C5CB /* Float+Math.swift in Sources */,
+				0456CB122CFF9EC2003384B3 /* Date+Extensions.swift in Sources */,
 				04B124AF2CFC986000E49914 /* Array+Extensions.swift in Sources */,
 				04B124A62CFC977000E49914 /* CAAnimation+Closure.swift in Sources */,
 				04B124BD2CFCAA0600E49914 /* UIBezierPath+Interpolation.swift in Sources */,

@@ -49,3 +49,16 @@ extension Array: Hashable where Iterator.Element: Hashable {
         return self.reduce(1, { $0.hashValue ^ $1.hashValue })
     }
 }
+
+public extension Array where Element: Equatable {
+    func indexes(of element: Element) -> [Int] {
+        return self.enumerated().filter({ element == $0.element }).map({ $0.offset })
+    }
+}
+public extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        return stride(from: 0, to: count, by: size).map {
+            Array(self[$0 ..< Swift.min($0 + size, count)])
+        }
+    }
+}
