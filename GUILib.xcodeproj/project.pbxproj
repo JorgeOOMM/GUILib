@@ -11,6 +11,8 @@
 		0456A3212CFC88D900EDA890 /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0456A3202CFC88D900EDA890 /* Compatibility.swift */; };
 		0456CB0E2CFE24F0003384B3 /* CATransaction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0456CB0D2CFE24F0003384B3 /* CATransaction+Extensions.swift */; };
 		0456CB122CFF9EC2003384B3 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0456CB112CFF9EC2003384B3 /* Date+Extensions.swift */; };
+		0456CB172CFFD4AF003384B3 /* UIScrollView+Zoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0456CB152CFFD4AF003384B3 /* UIScrollView+Zoom.swift */; };
+		0456CB182CFFD4AF003384B3 /* UIView+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0456CB162CFFD4AF003384B3 /* UIView+Border.swift */; };
 		047B0A102CFC547D00F5C5CB /* GUILib.docc in Sources */ = {isa = PBXBuildFile; fileRef = 047B0A0F2CFC547D00F5C5CB /* GUILib.docc */; };
 		047B0A162CFC547D00F5C5CB /* GUILib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 047B0A0B2CFC547D00F5C5CB /* GUILib.framework */; };
 		047B0A1B2CFC547D00F5C5CB /* GUILibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B0A1A2CFC547D00F5C5CB /* GUILibTests.swift */; };
@@ -44,7 +46,7 @@
 		04B124BD2CFCAA0600E49914 /* UIBezierPath+Interpolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124BC2CFCAA0600E49914 /* UIBezierPath+Interpolation.swift */; };
 		04B124C82CFCB1BB00E49914 /* CubicCurveAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124C02CFCB1BB00E49914 /* CubicCurveAlgorithm.swift */; };
 		04B124C92CFCB1BB00E49914 /* PolyLineInterpolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124C12CFCB1BB00E49914 /* PolyLineInterpolation.swift */; };
-		04B124CE2CFCB62400E49914 /* DiscreteScaledPointsGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124CD2CFCB62400E49914 /* DiscreteScaledPointsGenerator.swift */; };
+		04B124CE2CFCB62400E49914 /* ScaledPointsGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124CD2CFCB62400E49914 /* ScaledPointsGenerator.swift */; };
 		04B124D22CFCDB1C00E49914 /* PolylineSimplify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124D12CFCDB1C00E49914 /* PolylineSimplify.swift */; };
 		04B124D42CFCDF3D00E49914 /* test-data.json in Resources */ = {isa = PBXBuildFile; fileRef = 04B124D32CFCDF3D00E49914 /* test-data.json */; };
 		04B124DC2CFE115100E49914 /* Stadistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B124DB2CFE115100E49914 /* Stadistics.swift */; };
@@ -65,6 +67,8 @@
 		0456A3202CFC88D900EDA890 /* Compatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compatibility.swift; sourceTree = "<group>"; };
 		0456CB0D2CFE24F0003384B3 /* CATransaction+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CATransaction+Extensions.swift"; sourceTree = "<group>"; };
 		0456CB112CFF9EC2003384B3 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		0456CB152CFFD4AF003384B3 /* UIScrollView+Zoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Zoom.swift"; sourceTree = "<group>"; };
+		0456CB162CFFD4AF003384B3 /* UIView+Border.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Border.swift"; sourceTree = "<group>"; };
 		047B0A0B2CFC547D00F5C5CB /* GUILib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GUILib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		047B0A0E2CFC547D00F5C5CB /* GUILib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GUILib.h; sourceTree = "<group>"; };
 		047B0A0F2CFC547D00F5C5CB /* GUILib.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = GUILib.docc; sourceTree = "<group>"; };
@@ -99,7 +103,7 @@
 		04B124BC2CFCAA0600E49914 /* UIBezierPath+Interpolation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+Interpolation.swift"; sourceTree = "<group>"; };
 		04B124C02CFCB1BB00E49914 /* CubicCurveAlgorithm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubicCurveAlgorithm.swift; sourceTree = "<group>"; };
 		04B124C12CFCB1BB00E49914 /* PolyLineInterpolation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyLineInterpolation.swift; sourceTree = "<group>"; };
-		04B124CD2CFCB62400E49914 /* DiscreteScaledPointsGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscreteScaledPointsGenerator.swift; sourceTree = "<group>"; };
+		04B124CD2CFCB62400E49914 /* ScaledPointsGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScaledPointsGenerator.swift; sourceTree = "<group>"; };
 		04B124D12CFCDB1C00E49914 /* PolylineSimplify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolylineSimplify.swift; sourceTree = "<group>"; };
 		04B124D32CFCDF3D00E49914 /* test-data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "test-data.json"; sourceTree = "<group>"; };
 		04B124DB2CFE115100E49914 /* Stadistics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stadistics.swift; sourceTree = "<group>"; };
@@ -124,6 +128,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0456CB142CFFCE87003384B3 /* Point */ = {
+			isa = PBXGroup;
+			children = (
+				04B124CD2CFCB62400E49914 /* ScaledPointsGenerator.swift */,
+			);
+			path = Point;
+			sourceTree = "<group>";
+		};
 		047B0A012CFC547D00F5C5CB = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +176,8 @@
 		047B0A312CFC54C800F5C5CB /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				0456CB152CFFD4AF003384B3 /* UIScrollView+Zoom.swift */,
+				0456CB162CFFD4AF003384B3 /* UIView+Border.swift */,
 				04B124BC2CFCAA0600E49914 /* UIBezierPath+Interpolation.swift */,
 				04B124B32CFC9CBE00E49914 /* CGRect+Extensions.swift */,
 				04B124AB2CFC986000E49914 /* Array+Extensions.swift */,
@@ -205,13 +219,13 @@
 		047B0A372CFC54C800F5C5CB /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				04B124CD2CFCB62400E49914 /* DiscreteScaledPointsGenerator.swift */,
-				047B0A362CFC54C800F5C5CB /* Log.swift */,
 				0456A3202CFC88D900EDA890 /* Compatibility.swift */,
+				047B0A362CFC54C800F5C5CB /* Log.swift */,
+				047B0A352CFC54C800F5C5CB /* Math */,
+				0456CB142CFFCE87003384B3 /* Point */,
 				04B124C72CFCB1BB00E49914 /* Polyline */,
 				04B124B82CFCA87000E49914 /* Path */,
 				047B0A312CFC54C800F5C5CB /* Categories */,
-				047B0A352CFC54C800F5C5CB /* Math */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -378,16 +392,18 @@
 			files = (
 				0456CB0E2CFE24F0003384B3 /* CATransaction+Extensions.swift in Sources */,
 				04B124BB2CFCA87000E49914 /* PathElement.swift in Sources */,
+				0456CB182CFFD4AF003384B3 /* UIView+Border.swift in Sources */,
 				04B124A82CFC977000E49914 /* RecursiveProtocol.swift in Sources */,
 				04B124AD2CFC986000E49914 /* FloatPoint+Extension.swift in Sources */,
 				047B0A442CFC54C800F5C5CB /* Easing.swift in Sources */,
 				04B124C92CFCB1BB00E49914 /* PolyLineInterpolation.swift in Sources */,
-				04B124CE2CFCB62400E49914 /* DiscreteScaledPointsGenerator.swift in Sources */,
+				04B124CE2CFCB62400E49914 /* ScaledPointsGenerator.swift in Sources */,
 				047B0A402CFC54C800F5C5CB /* Float+Extensions.swift in Sources */,
 				04B124B02CFC986000E49914 /* CGPath+Extensions.swift in Sources */,
 				04B124C82CFCB1BB00E49914 /* CubicCurveAlgorithm.swift in Sources */,
 				047B0A3C2CFC54C800F5C5CB /* CGFloat+Math.swift in Sources */,
 				047B0A412CFC54C800F5C5CB /* Float+Math.swift in Sources */,
+				0456CB172CFFD4AF003384B3 /* UIScrollView+Zoom.swift in Sources */,
 				0456CB122CFF9EC2003384B3 /* Date+Extensions.swift in Sources */,
 				04B124AF2CFC986000E49914 /* Array+Extensions.swift in Sources */,
 				04B124A62CFC977000E49914 /* CAAnimation+Closure.swift in Sources */,

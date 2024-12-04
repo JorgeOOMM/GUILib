@@ -36,6 +36,69 @@ public extension CALayer {
     }
 }
 
+public extension CAShapeLayer {
+    
+    /// projectLineStrokeGradient
+    /// - Parameters:
+    ///   - internalPoints: [CGPoints]]
+    ///   - ctx: CGContext
+    ///   - gradient: CGGradient
+    private func projectLineStrokeGradient(_ ctx: CGContext,
+                                           gradient: CGGradient,
+                                           internalPoints: [CGPoint],
+                                           lineWidth: CGFloat) {
+        ctx.saveGState()
+        for index in 0..<internalPoints.count - 1  {
+            var start: CGPoint = internalPoints[index]
+            // The ending point of the axis, in the shading's target coordinate space.
+            var end: CGPoint  = internalPoints[index+1]
+            // Draw the gradient in the clipped region
+            let hw = lineWidth * 0.5
+            start  = end.projectLine(start, length: hw)
+            end    = start.projectLine(end, length: -hw)
+            ctx.scaleBy(x: self.bounds.size.width,
+                        y: self.bounds.size.height )
+            ctx.drawLinearGradient(gradient,
+                                   start: start,
+                                   end: end,
+                                   options: [])
+        }
+        ctx.restoreGState()
+    }
+    
+    func strokeGradient( ctx: CGContext?,
+                         points: [CGPoint]?,
+                         color: UIColor,
+                         lineWidth: CGFloat,
+                         fadeFactor: CGFloat = 0.4)  {
+        if  let ctx = ctx {
+            let locations =  [0, fadeFactor, 1 - fadeFactor, 1]
+            let gradient = CGGradient(colorsSpace: nil,
+                                      colors: [UIColor.white.withAlphaComponent(0.1).cgColor,
+                                               color.cgColor,
+                                               color.withAlphaComponent(fadeFactor).cgColor ,
+                                               UIColor.white.withAlphaComponent(0.8).cgColor] as CFArray,
+                                      locations: locations )!
+            // Clip to the path, stroke and enjoy.
+            if let path = self.path {
+                color.setStroke()
+                let curPath = UIBezierPath(cgPath: path)
+                curPath.lineWidth = lineWidth
+                curPath.stroke()
+                curPath.addClip()
+                // if we are using the stroke, we offset the from and to points
+                // by half the stroke width away from the center of the stroke.
+                // Otherwise we tend to end up with fills that only cover half of the
+                // because users set the start and end points based on the center
+                // of the stroke.
+                if let internalPoints = points {
+                    projectLineStrokeGradient( ctx, gradient: gradient, internalPoints: internalPoints, lineWidth: lineWidth)
+                }
+            }
+        }
+    }
+}
+
 
 public extension CALayer {
     typealias LayerAnimation = (CALayer) -> CAAnimation
@@ -87,7 +150,7 @@ public extension CALayer {
         }
         return trans
     }
-
+    
     @objc func tint(withColors colors: [UIColor]) {
         sublayers?.recursiveSearch(leafBlock: {
             backgroundColor = colors.first?.cgColor

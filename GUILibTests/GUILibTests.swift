@@ -8,7 +8,7 @@
 import XCTest
 @testable import GUILib
 // Helpers
-fileprivate func randomNumber(probabilities: [Double]) -> Int {
+private func randomNumber(probabilities: [Double]) -> Int {
     // Sum of all probabilities (so that we don't have to require that the sum is 1.0):
     let sum = probabilities.reduce(0, +)
     // Random number in the range 0.0 <= rnd < sum :
@@ -25,21 +25,21 @@ fileprivate func randomNumber(probabilities: [Double]) -> Int {
     return (probabilities.count - 1)
 }
 // MARK: - Random numbers
-fileprivate extension BinaryInteger {
+private extension BinaryInteger {
     static func random(min: Self, max: Self) -> Self {
         assert(min < max, "min must be smaller than max")
         let delta = max - min
         return min + Self(arc4random_uniform(UInt32(delta)))
     }
 }
-fileprivate extension FloatingPoint {
+private extension FloatingPoint {
     static func random(min: Self, max: Self, resolution: Int = 1000) -> Self {
         let randomFraction = Self(Int.random(min: 0, max: resolution)) / Self(resolution)
         return min + randomFraction * max
     }
 }
 
-fileprivate func randomSize(bounded bounds: CGRect,
+private func randomSize(bounded bounds: CGRect,
                             numberOfItems: Int) -> [CGSize] {
     let randomSizes  = (0..<numberOfItems).map {
         _ in CGSize(width: .random(min: 0, max: bounds.size.width),
@@ -47,12 +47,12 @@ fileprivate func randomSize(bounded bounds: CGRect,
     }
     return randomSizes
 }
-fileprivate func randomFloat(_ numberOfItems: Int, min: Float = 0, max: Float = 100000) -> [Float] {
+private func randomFloat(_ numberOfItems: Int, min: Float = 0, max: Float = 100000) -> [Float] {
     let randomData = (0..<numberOfItems).map { _ in Float.random(min: min, max: max) }
     return randomData
 }
 
-fileprivate func loadPointsFromJSON(from bundle:Bundle, fileName: String) -> [CGPoint] {
+private func loadPointsFromJSON(from bundle:Bundle, fileName: String) -> [CGPoint] {
     var points: [CGPoint] = []
     let testDataPath = bundle.path(forResource: fileName, ofType: "json")
     guard let testData = try? Data(contentsOf: URL(fileURLWithPath: testDataPath!), options: []) else {
@@ -74,7 +74,7 @@ fileprivate func loadPointsFromJSON(from bundle:Bundle, fileName: String) -> [CG
 }
 
 final class GUILibTests: XCTestCase {
-    fileprivate var points: [CGPoint] = []
+    private var points: [CGPoint] = []
     
     override func setUpWithError() throws {
         self.points = loadPointsFromJSON(from: Bundle(for: type(of: self)), fileName: "test-data")
@@ -125,16 +125,15 @@ final class GUILibTests: XCTestCase {
     func testScaledPointsGenerator() {
         let numberOfItems = 300
         let sizes = randomSize(bounded: UIScreen.main.bounds, numberOfItems: numberOfItems)
-        let scaler  = DiscreteScaledPointsGenerator()
+        let scaler  = ScaledPointsGenerator()
         let randomData = randomFloat(numberOfItems)
         for size in sizes {
-            let scaler2 = ScaledPointsGenerator(randomData, size: size, insets: .zero)
             let points  = scaler.makePoints(data: randomData, size: size, updateLimits: true)
             let result = points.map { CGRect(origin: .zero, size: size).contains($0) }
-            let points2 = scaler2.makePoints()
-            let result2 = points2.map { CGRect(origin: .zero, size: size).contains($0) }
-            XCTAssert(points == points2, "ScaledPointsGenerator points")
-            XCTAssert(result == result2, "ScaledPointsGenerator bounds")
+            let pointsInline = InlineScaledPointsGenerator(randomData, size: size, insets: .zero).makePoints()
+            let resultInline = pointsInline.map { CGRect(origin: .zero, size: size).contains($0) }
+            XCTAssert(points == pointsInline, "ScaledPointsGenerator points")
+            XCTAssert(result == resultInline, "ScaledPointsGenerator bounds")
         }
     }
     // Test the PolylineSimplify core class

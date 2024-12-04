@@ -35,7 +35,7 @@ open class PolylineSimplify {
      
      - returns: square distance between two points
      */
-    fileprivate class func getSquareDistance<T: SimplifyValue>(_ pointA: T,_ pointB: T) -> Float {
+    fileprivate class func getSquareDistance<T: SimplifyValue>(_ pointA: T, _ pointB: T) -> Float {
         return Float((pointA.xValue - pointB.xValue) * (pointA.xValue - pointB.xValue) + (pointA.yValue - pointB.yValue) * (pointA.yValue - pointB.yValue))
     }
     

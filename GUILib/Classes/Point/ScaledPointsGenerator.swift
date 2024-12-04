@@ -16,10 +16,10 @@
 //  ScaledPointsGenerator
 //
 //  Created by Jorge Ouahbi on 16/08/2020.
-
-
+//
 import UIKit
 import Accelerate
+// MARK: - ScaledPointsGeneratorProtocol
 public protocol ScaledPointsGeneratorProtocol {
     var maximumValue: Float {get}
     var minimumValue: Float {get}
@@ -29,11 +29,9 @@ public protocol ScaledPointsGeneratorProtocol {
     var range: Float {get}
     var hScale: CGFloat {get}
     var isLimitsDirty: Bool {get set}
-    
     func makePoints(data: [Float], size: CGSize, updateLimits: Bool) -> [CGPoint]
     func updateRangeLimits(_ data: [Float])
 }
-
 // Default values.
 public extension ScaledPointsGeneratorProtocol {
     var hScale: CGFloat { return 1.0 }
@@ -43,8 +41,8 @@ public extension ScaledPointsGeneratorProtocol {
         return maximumValue - minimumValue
     }
 }
-// MARK: - DiscreteScaledPointsGenerator -
-public class DiscreteScaledPointsGenerator: ScaledPointsGeneratorProtocol {
+// MARK: - ScaledPointsGenerator
+public class ScaledPointsGenerator: ScaledPointsGeneratorProtocol {
     public var insets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     public var isLimitsDirty: Bool = true
     public private(set) var maximumValue: Float = 0
@@ -105,8 +103,8 @@ public class DiscreteScaledPointsGenerator: ScaledPointsGeneratorProtocol {
         }
     }
 }
-// MARK:  ScaledPointsGenerator -
-public class ScaledPointsGenerator: DiscreteScaledPointsGenerator {
+// MARK: - InlineScaledPointsGenerator
+public class InlineScaledPointsGenerator: ScaledPointsGenerator {
     public var data: [Float]! {
         didSet {
             isLimitsDirty = true
