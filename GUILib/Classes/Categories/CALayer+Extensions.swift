@@ -67,10 +67,10 @@ public extension CAShapeLayer {
     }
     
     func strokeGradient( ctx: CGContext?,
-                         points: [CGPoint]?,
-                         color: UIColor,
-                         lineWidth: CGFloat,
-                         fadeFactor: CGFloat = 0.4)  {
+                                 points: [CGPoint]?,
+                                 color: UIColor,
+                                 lineWidth: CGFloat,
+                                 fadeFactor: CGFloat = 0.4)  {
         if  let ctx = ctx {
             let locations =  [0, fadeFactor, 1 - fadeFactor, 1]
             let gradient = CGGradient(colorsSpace: nil,
@@ -150,7 +150,7 @@ public extension CALayer {
         }
         return trans
     }
-    
+
     @objc func tint(withColors colors: [UIColor]) {
         sublayers?.recursiveSearch(leafBlock: {
             backgroundColor = colors.first?.cgColor
