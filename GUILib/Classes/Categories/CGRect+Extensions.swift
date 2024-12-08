@@ -145,10 +145,12 @@ extension CGRect {
 //    }
 //}
 
-
 extension CGRect: Hashable {
-    public var hashValue: Int {
-        return NSCoder.string(for: self).hashValue
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.origin.x)
+        hasher.combine(self.origin.y)
+        hasher.combine(self.size.width)
+        hasher.combine(self.size.height)
     }
 }
 // swiftlint:enabled file_length

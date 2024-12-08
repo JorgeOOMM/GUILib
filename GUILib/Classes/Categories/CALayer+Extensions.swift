@@ -15,7 +15,15 @@ public extension CALayer {
         shadowOpacity = 1
         shadowRadius  = 4.0
         shadowOpacity = 0.9
-        shadowOffset  = CGSize(width: 0,height: 3)
+        shadowOffset  = CGSize(width: 0, height: 3)
+    }
+    func removeGlow() {
+        masksToBounds = false
+        shadowColor = UIColor.clear.cgColor
+        shadowOpacity = 0
+        shadowRadius  = 0
+        shadowOpacity = 0
+        shadowOffset  = .zero
     }
 }
 
@@ -35,6 +43,7 @@ public extension CALayer {
         add(anim, forKey: key)
     }
 }
+
 
 public extension CAShapeLayer {
     

@@ -32,10 +32,10 @@ extension UIColor {
     public class func lerp(_ start: UIColor, end: UIColor, alpha: CGFloat) -> UIColor {
         let srgba = start.components
         let ergba = end.components
-        return UIColor(red: Interpolation.lerp(srgba[0],lerpy1: ergba[0],alpha: alpha),
-                       green: Interpolation.lerp(srgba[1],lerpy1: ergba[1],alpha: alpha),
-                       blue: Interpolation.lerp(srgba[2],lerpy1: ergba[2],alpha: alpha),
-                       alpha: Interpolation.lerp(srgba[3],lerpy1: ergba[3],alpha: alpha))
+        return UIColor(red: Interpolation.lerp(srgba[0], lerpy1: ergba[0], alpha: alpha),
+                       green: Interpolation.lerp(srgba[1], lerpy1: ergba[1], alpha: alpha),
+                       blue: Interpolation.lerp(srgba[2], lerpy1: ergba[2], alpha: alpha),
+                       alpha: Interpolation.lerp(srgba[3], lerpy1: ergba[3], alpha: alpha))
     }
     /// Cosine interpolate
     ///
@@ -47,10 +47,10 @@ extension UIColor {
     public class func coserp(_ start: UIColor, end: UIColor, alpha: CGFloat) -> UIColor {
         let srgba = start.components
         let ergba = end.components
-        return UIColor(red: Interpolation.coserp(srgba[0],coserpy1: ergba[0],alpha: alpha),
-                       green: Interpolation.coserp(srgba[1],coserpy1: ergba[1],alpha: alpha),
-                       blue: Interpolation.coserp(srgba[2],coserpy1: ergba[2],alpha: alpha),
-                       alpha: Interpolation.coserp(srgba[3],coserpy1: ergba[3],alpha: alpha))
+        return UIColor(red: Interpolation.coserp(srgba[0], coserpy1: ergba[0], alpha: alpha),
+                       green: Interpolation.coserp(srgba[1], coserpy1: ergba[1], alpha: alpha),
+                       blue: Interpolation.coserp(srgba[2], coserpy1: ergba[2], alpha: alpha),
+                       alpha: Interpolation.coserp(srgba[3], coserpy1: ergba[3], alpha: alpha))
     }
     /// Exponential interpolation
     ///
@@ -62,10 +62,10 @@ extension UIColor {
     public class func eerp(_ start: UIColor, end: UIColor, alpha: CGFloat) -> UIColor {
         let srgba = start.components
         let ergba = end.components
-        let red = clamp(Interpolation.eerp(srgba[0],eerpy1: ergba[0],alpha: alpha), lowerValue: 0,upperValue: 1)
-        let green = clamp(Interpolation.eerp(srgba[1],eerpy1: ergba[1],alpha: alpha),lowerValue: 0, upperValue: 1)
-        let blue = clamp(Interpolation.eerp(srgba[2],eerpy1: ergba[2],alpha: alpha), lowerValue: 0, upperValue: 1)
-        let rgbalpha = clamp(Interpolation.eerp(srgba[3],eerpy1: ergba[3],alpha: alpha), lowerValue: 0,upperValue: 1)
+        let red = clamp(Interpolation.eerp(srgba[0], eerpy1: ergba[0], alpha: alpha), lowerValue: 0, upperValue: 1)
+        let green = clamp(Interpolation.eerp(srgba[1], eerpy1: ergba[1], alpha: alpha), lowerValue: 0, upperValue: 1)
+        let blue = clamp(Interpolation.eerp(srgba[2], eerpy1: ergba[2], alpha: alpha), lowerValue: 0, upperValue: 1)
+        let rgbalpha = clamp(Interpolation.eerp(srgba[3], eerpy1: ergba[3], alpha: alpha), lowerValue: 0, upperValue: 1)
         assert(red <= 1.0 && green <= 1.0 && blue <= 1.0 && rgbalpha <= 1.0)
         return UIColor(red: red,
                        green: green,
@@ -84,10 +84,30 @@ extension UIColor {
         let ergba0 = end[0].components
         let srgba1 = start[1].components
         let ergba1 = end[1].components
-        return UIColor(red: Interpolation.bilerp(srgba0[0], bilerpy1: ergba0[0], bilerpt1: alpha[0], bilerpy2: srgba1[0], bilerpy3: ergba1[0], bilerpt2: alpha[1]),
-                       green: Interpolation.bilerp(srgba0[1], bilerpy1: ergba0[1], bilerpt1: alpha[0], bilerpy2: srgba1[1], bilerpy3: ergba1[1], bilerpt2: alpha[1]),
-                       blue: Interpolation.bilerp(srgba0[2], bilerpy1: ergba0[2], bilerpt1: alpha[0], bilerpy2: srgba1[2], bilerpy3: ergba1[2], bilerpt2: alpha[1]),
-                       alpha:  Interpolation.bilerp(srgba0[3], bilerpy1: ergba0[3], bilerpt1: alpha[0], bilerpy2: srgba1[3], bilerpy3: ergba1[3], bilerpt2: alpha[1]))
-        
+        let red = Interpolation.bilerp(srgba0[0],
+                                       bilerpy1: ergba0[0],
+                                       bilerpt1: alpha[0],
+                                       bilerpy2: srgba1[0],
+                                       bilerpy3: ergba1[0],
+                                       bilerpt2: alpha[1])
+        let green = Interpolation.bilerp(srgba0[1],
+                                         bilerpy1: ergba0[1],
+                                         bilerpt1: alpha[0],
+                                         bilerpy2: srgba1[1],
+                                         bilerpy3: ergba1[1],
+                                         bilerpt2: alpha[1])
+        let blue = Interpolation.bilerp(srgba0[2],
+                                        bilerpy1: ergba0[2],
+                                        bilerpt1: alpha[0],
+                                        bilerpy2: srgba1[2],
+                                        bilerpy3: ergba1[2],
+                                        bilerpt2: alpha[1])
+        let alpha = Interpolation.bilerp(srgba0[3],
+                                         bilerpy1: ergba0[3],
+                                         bilerpt1: alpha[0],
+                                         bilerpy2: srgba1[3],
+                                         bilerpy3: ergba1[3],
+                                         bilerpt2: alpha[1])
+        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
     }
 }

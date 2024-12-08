@@ -54,7 +54,6 @@ class Interpolation {
     ///  a1 = y0 - 2.5*y1 + 2*y2 - 0.5*y3;
     ///  a2 = -0.5*y0 + 0.5*y2;
     ///  a3 = y1;
-    
     class func cubicerp(_ cubicerpy0: CGFloat,
                         cubicerpy1: CGFloat,
                         cubicerpy2: CGFloat,
@@ -127,7 +126,7 @@ class Interpolation {
                       bilerpt2: CGFloat) -> CGFloat {
         assert(bilerpt1 >= 0.0 && bilerpt1 <= 1.0)
         assert(bilerpt2 >= 0.0 && bilerpt2 <= 1.0)
-        return lerp(lerp(bilerpy0, lerpy1: bilerpy1, alpha: bilerpt1), 
+        return lerp(lerp(bilerpy0, lerpy1: bilerpy1, alpha: bilerpt1),
                     lerpy1: lerp(bilerpy2, lerpy1: bilerpy3, alpha: bilerpt2),
                     alpha: 0.5)
     }
@@ -138,7 +137,7 @@ class Interpolation {
     ///   - y1: element 1
     ///   - alpha: alpha
     /// - Returns: the interpolate value
-    class func coserp(_ coserpy0: CGFloat, 
+    class func coserp(_ coserpy0: CGFloat,
                       coserpy1: CGFloat,
                       alpha: CGFloat) -> CGFloat {
         assert(alpha >= 0.0 && alpha <= 1.0)

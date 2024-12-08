@@ -7,12 +7,11 @@ protocol IterableElement {}
 extension UIView: IterableElement {}
 extension CALayer: IterableElement {}
 
-//MARK: Recursive
+// MARK: Recursive
 protocol Recursive {
     associatedtype Element: IterableElement
     func recursiveSearch(leafBlock: VoidBlock, recursiveBlock: RecursiveBlock<Element>)
 }
-
 extension Array: Recursive where Element: IterableElement {
     func recursiveSearch(leafBlock: VoidBlock, recursiveBlock: RecursiveBlock<Element>) {
         guard !isEmpty else {
@@ -22,5 +21,3 @@ extension Array: Recursive where Element: IterableElement {
         forEach { recursiveBlock($0) }
     }
 }
-
-

@@ -1,20 +1,15 @@
 import UIKit
-
-
 // MARK: - subpaths -
-
 public extension CGPath {
     var subpaths: [UIBezierPath] {
         return Path(cgPath: self).pathsFromElements()
     }
 }
-
-
 // TODO: calculate normals/tangents
-
-// swiftlint:disable identifier_name shorthand_operator
+// swiftlint:disable identifier_name 
+// swiftlint:disable shorthand_operator
 // swiftlint:disable file_length
-// swiftlint:disable type_body_length//
+// swiftlint:disable type_body_length
 public struct Path {
     // MARK: - Interface
     public init(cgPath: CGPath) {
@@ -73,7 +68,6 @@ public struct Path {
 
         self.init(elements: [startElement, endElement])
     }
-    
     public func destinationPoints() -> [CGPoint] {
         var lastPoint = CGPoint.zero
         var points = [CGPoint]()
@@ -84,19 +78,18 @@ public struct Path {
             case .addLineToPoint(point: let point):
                 lastPoint = point
             case .addQuadCurveToPoint(destination: let destination, control: _):
-                //let pt1 = Path.pointOfQuad(t: 1.0, from: lastPoint, to: destination, c: control)
+                // let pt1 = Path.pointOfQuad(t: 1.0, from: lastPoint, to: destination, c: control)
                 lastPoint = destination
             case .addCurveToPoint(destination: let destination, control1: _, control2: _):
-                //let pt2 = Path.pointOfCubic(t: 1.0, from: lastPoint, to: destination, c1: control1, c2: control2)
+                // let pt2 = Path.pointOfCubic(t: 1.0, from: lastPoint, to: destination, c1: control1, c2: control2)
                 lastPoint = destination
             case .closeSubpathWithLine: break
             }
             points.append(lastPoint)
         }
-        
         return points
     }
-    public func pathsFromElements() ->  [UIBezierPath] {
+    public func pathsFromElements() -> [UIBezierPath] {
         var paths = [UIBezierPath]()
         var lastPoint = CGPoint.zero
         for ele in elements {
@@ -123,12 +116,10 @@ public struct Path {
         }
         return paths
     }
-    
     public func percentagesWhereYIs(y: Double) -> [Double] {
         var subpathStart: CGPoint?
         var recentPoint: CGPoint?
         var totalPercentage: Double = 0
-
         let elementCount = elements.count
         var answer: [Double] = []
         for i in 0..<elementCount {
@@ -137,7 +128,10 @@ public struct Path {
             if element.mayContainY(y: y,
                                    ifStartedFrom: recentPoint,
                                    subpathStartedFrom: subpathStart) {
-                let elementAnswer = element.percentagesWhereYIs(y: y, ifStartedFrom: recentPoint, subpathStartedFrom: subpathStart, precalculatedLength: lengths[i])
+                let elementAnswer = element.percentagesWhereYIs(y: y,
+                                                                ifStartedFrom: recentPoint,
+                                                                subpathStartedFrom: subpathStart,
+                                                                precalculatedLength: lengths[i])
                 let answerMapped = elementAnswer.map { totalPercentage + elementPercentage * $0 }
                 answer.append(contentsOf: answerMapped)
             }
@@ -145,7 +139,6 @@ public struct Path {
             subpathStart = element.updateSubpathStart(subpathStart: subpathStart)
             totalPercentage += elementPercentage
         }
-
         return answer
     }
     /// pointForPercentage
@@ -170,7 +163,9 @@ public struct Path {
                     return nil
                 } else {
                     let inElementPercentage = percentageLeft / elementPercentage
-                    return element.pointForPercentage(pathPercent: inElementPercentage, ifStartedFrom: recentPoint, subpathStartedFrom: subpathStart)
+                    return element.pointForPercentage(pathPercent: inElementPercentage,
+                                                      ifStartedFrom: recentPoint,
+                                                      subpathStartedFrom: subpathStart)
                 }
             }
 
@@ -178,29 +173,21 @@ public struct Path {
             subpathStart = element.updateSubpathStart(subpathStart: subpathStart)
             totalPercentage = nextTotalPercentage
         }
-
         return nil
     }
-
     // MARK: - Internal
     public  let elements: [Path.Element]
     public  let lengths: [Double]
     public  let length: Double
     public  let percentages: [Double]
 }
-
 // MARK: - Routines
-
 // MARK: Init
-
 private extension Path {
     private static func pathElements(cgPath: CGPath) -> [Path.Element] {
         var pathElements: [Path.Element] = []
-        withUnsafeMutablePointer(to: &pathElements) {
-            (pathElementsPtr: UnsafeMutablePointer<[Path.Element]>) -> Void in
-
-            cgPath.apply(info: pathElementsPtr) {
-                (context, cgPathElementPtr: UnsafePointer<CGPathElement>) in
+        withUnsafeMutablePointer(to: &pathElements) {(pathElementsPtr: UnsafeMutablePointer<[Path.Element]>) in
+            cgPath.apply(info: pathElementsPtr) { (context, cgPathElementPtr: UnsafePointer<CGPathElement>) in
                 let cgPathElement = cgPathElementPtr.pointee
                 let element: Path.Element
                 switch cgPathElement.type {
@@ -226,25 +213,23 @@ private extension Path {
                 @unknown default:
                     fatalError()
                 }
-
                 let elementsPtr = unsafeBitCast(context, to: UnsafeMutablePointer<[Path.Element]>.self)
                 elementsPtr.pointee.append(element)
             }
         }
-
         return pathElements
     }
-
-    // returns array with entry per element, '0' for the first element
+    /// Returns array with entry per element, '0' for the first element
+    ///
+    /// - Parameter pathElements: [Path.Element]
+    /// - Returns: [Double]
+    ///
     private static func calculateLengths(pathElements: [Path.Element]) -> [Double] {
         var result: [Double] = []
         var subpathStartPoint: CGPoint?
         var recentPoint: CGPoint?
         for element in pathElements {
-            if let
-                haveRecentPoint = recentPoint,
-                let haveSubpathStartPoint = subpathStartPoint
-            {
+            if let haveRecentPoint = recentPoint, let haveSubpathStartPoint = subpathStartPoint {
                 switch element {
                 case let .moveToPoint(point):
                     subpathStartPoint = point
@@ -259,7 +244,10 @@ private extension Path {
                     result.append(distance)
                     recentPoint = destination
                 case let .addCurveToPoint(destination, control1, control2):
-                    let distance = distanceCubic(from: haveRecentPoint, to: destination, control1: control1, control2: control2)
+                    let distance = distanceCubic(from: haveRecentPoint,
+                                                 to: destination,
+                                                 control1: control1,
+                                                 control2: control2)
                     result.append(distance)
                     recentPoint = destination
                 case .closeSubpathWithLine:
@@ -282,10 +270,8 @@ private extension Path {
                 }
             }
         }
-
         return result
     }
-
     private static func calculateSumOfLengths(lengths: [Double]) -> Double {
         var sum: Double = 0
         for length in lengths {
@@ -293,7 +279,6 @@ private extension Path {
         }
         return sum
     }
-
     private static func calculatePercentages(parts: [Double], whole: Double) -> [Double] {
         if whole == 0 {
             // is there better way to do it?
@@ -303,24 +288,19 @@ private extension Path {
         }
     }
 }
-
 // MARK: Distances
-
 extension Path {
     static let flatteningQuality: Int = 32
-
     static func distanceQuad(from: CGPoint, to: CGPoint, control c: CGPoint) -> Double {
         // may reuse these for optimization
         let segments = segmentsOfQuad(n: flatteningQuality, from: from, to: to, c: c)
         return sumOfSegments(points: segments)
     }
-
     static func distanceCubic(from: CGPoint, to: CGPoint, control1 c1: CGPoint, control2 c2: CGPoint) -> Double {
         // may reuse these for optimization
         let segments = segmentsOfCubic(n: flatteningQuality, from: from, to: to, c1: c1, c2: c2)
         return sumOfSegments(points: segments)
     }
-
     static func segmentsOfQuad(n: Int, from: CGPoint, to: CGPoint, c: CGPoint) -> [CGPoint] {
         let start: Double
         let step: Double
@@ -331,15 +311,12 @@ extension Path {
             start = 0
             step = Double(1) / (Double(n)-Double(1))
         }
-
         var result: [CGPoint] = []
-
         for i in stride(from: start, to: Double(1), by: step) {
             result.append(pointOfQuad(t: i, from: from, to: to, c: c))
         }
         return result
     }
-
     static func segmentsOfCubic(n: Int, from: CGPoint, to: CGPoint, c1: CGPoint, c2: CGPoint) -> [CGPoint] {
         let start: Double
         let step: Double
@@ -350,14 +327,12 @@ extension Path {
             start = 0
             step = Double(1) / (Double(n)-Double(1))
         }
-
         var result: [CGPoint] = []
         for i in stride(from: start, to: Double(1), by: step) {
             result.append(pointOfCubic(t: i, from: from, to: to, c1: c1, c2: c2))
         }
         return result
     }
-
     static func sumOfSegments(points: [CGPoint]) -> Double {
         let count = points.count
         if count < 2 {
@@ -373,32 +348,27 @@ extension Path {
             return sum
         }
     }
-
     static func distanceLinear(from: CGPoint, to: CGPoint) -> Double {
         let xDistance = Double(from.x-to.x)
         let yDistance = Double(from.y-to.y)
         return sqrt(xDistance * xDistance + yDistance * yDistance)
     }
-
     static func pointOfQuad(t: Double, from: CGPoint, to: CGPoint, c: CGPoint) -> CGPoint {
         let x = bezierValueQuad(t: t, P0: Double(from.x), P1: Double(c.x), P2: Double(to.x))
         let y = bezierValueQuad(t: t, P0: Double(from.y), P1: Double(c.y), P2: Double(to.y))
         return CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
-
     static func pointOfCubic(t: Double, from: CGPoint, to: CGPoint, c1: CGPoint, c2: CGPoint) -> CGPoint {
         let x = bezierValueCubic(t: t, P0: Double(from.x), P1: Double(c1.x), P2: Double(c2.x), P3: Double(to.x))
         let y = bezierValueCubic(t: t, P0: Double(from.y), P1: Double(c1.y), P2: Double(c2.y), P3: Double(to.y))
         return CGPoint(x: CGFloat(x), y: CGFloat(y))
     }
-
     static func bezierValueQuad(t: Double, P0: Double, P1: Double, P2: Double) -> Double {
         return
             (1-t) * (1-t) * P0
                 + 2 * (1-t) * t * P1
                 + t * t * P2
     }
-
     static func bezierValueCubic(t: Double, P0: Double, P1: Double, P2: Double, P3: Double) -> Double {
         return
             (1-t) * (1-t) * (1-t) * P0
@@ -408,6 +378,7 @@ extension Path {
     }
 }
 
-// swiftlint:enabled identifier_name shorthand_operator
+// swiftlint:enabled identifier_name 
+// swiftlint:enabled shorthand_operator
 // swiftlint:enabled file_length
 // swiftlint:enabled type_body_length
