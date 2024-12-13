@@ -6,8 +6,6 @@
 //
 
 import UIKit
-
-
 public extension CALayer {
     func setGlow(with color: UIColor) {
         masksToBounds = false
@@ -26,24 +24,16 @@ public extension CALayer {
         shadowOffset  = .zero
     }
 }
-
-
 public extension CALayer {
-    static var isAnimatingLayers: Int = 0
     func add(_ anim: CAAnimation,
              forKey key: String?,
              withCompletion completion: ((Bool) -> Void)?) {
-        CALayer.isAnimatingLayers += 1
         anim.completion = {  complete in
             completion?(complete)
-            if complete {
-                CALayer.isAnimatingLayers -= 1
-            }
         }
         add(anim, forKey: key)
     }
 }
-
 
 public extension CAShapeLayer {
     

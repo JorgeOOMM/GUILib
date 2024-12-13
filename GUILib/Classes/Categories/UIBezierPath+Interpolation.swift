@@ -136,7 +136,6 @@ public extension UIBezierPath {
         if closed {
             self.close()
         }
-        
     }
     /// Create an UIBezierPath instance from a sequence of points which is drawn smoothly.
     ///
@@ -150,18 +149,14 @@ public extension UIBezierPath {
         var prevPoint: CGPoint?
         for (index, point) in smoothedPoints.enumerated() {
             if index == 0 {
-                self.move(to: CGPoint(x: point.x, y: CGFloat(maxYPosition)))
                 if maxYPosition != 0 {
-                    
                     self.move(to: CGPoint(x: point.x, y: CGFloat(maxYPosition)))
                 } else {
                     self.move(to: point)
                 }
-                addLine(to: point)
+            } else if index == 1 {
+                self.addLine(to: point)
             } else {
-                //                if index == 1 {
-                //                    self.addLine(to: point)
-                //                }
                 if let prevPoint = prevPoint {
                     let midPoint = prevPoint.midPointForPointsTo(point)
                     self.addQuadCurve(to: midPoint, controlPoint: midPoint.controlPointToPoint(prevPoint))

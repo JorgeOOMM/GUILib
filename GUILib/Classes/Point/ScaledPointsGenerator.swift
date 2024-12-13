@@ -20,7 +20,7 @@
 import UIKit
 import Accelerate
 // MARK: - ScaledPointsGeneratorProtocol
-public protocol ScaledPointsGeneratorProtocol {
+public protocol PointScalerGeneratorProtocol {
     var maximumValue: Float {get}
     var minimumValue: Float {get}
     var insets: UIEdgeInsets {get set}
@@ -29,11 +29,11 @@ public protocol ScaledPointsGeneratorProtocol {
     var range: Float {get}
     var hScale: CGFloat {get}
     var isLimitsDirty: Bool {get set}
-    func makePoints(data: [Float], size: CGSize, updateLimits: Bool) -> [CGPoint]
+    func makePoints(data: [Float], size: CGSize) -> [CGPoint]
     func updateRangeLimits(_ data: [Float])
 }
 // Default values.
-public extension ScaledPointsGeneratorProtocol {
+public extension PointScalerGeneratorProtocol {
     var hScale: CGFloat { return 1.0 }
     var minimum: Float? { return nil }
     var maximum: Float? { return nil }
@@ -42,7 +42,7 @@ public extension ScaledPointsGeneratorProtocol {
     }
 }
 // MARK: - ScaledPointsGenerator
-public class ScaledPointsGenerator: ScaledPointsGeneratorProtocol {
+public class ScaledPointsGenerator: PointScalerGeneratorProtocol {
     public var insets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     public var isLimitsDirty: Bool = true
     public private(set) var maximumValue: Float = 0
@@ -56,6 +56,9 @@ public class ScaledPointsGenerator: ScaledPointsGeneratorProtocol {
         didSet {
             isLimitsDirty = true
         }
+    }
+    public init(_ insets: UIEdgeInsets = .zero) {
+        self.insets = insets
     }
     public func updateRangeLimits(_ data: [Float]) {
         guard isLimitsDirty else {
@@ -78,8 +81,8 @@ public class ScaledPointsGenerator: ScaledPointsGeneratorProtocol {
         maximumValue = max
         isLimitsDirty = false
     }
-    public func makePoints(data: [Float], size: CGSize, updateLimits: Bool = false) -> [CGPoint] {
-        if isLimitsDirty || updateLimits {
+    public func makePoints(data: [Float], size: CGSize) -> [CGPoint] {
+        if isLimitsDirty {
             updateRangeLimits(data)
         }
         // claculate the size
@@ -104,30 +107,30 @@ public class ScaledPointsGenerator: ScaledPointsGeneratorProtocol {
     }
 }
 // MARK: - InlineScaledPointsGenerator
-public class InlineScaledPointsGenerator: ScaledPointsGenerator {
-    public var data: [Float]! {
-        didSet {
-            isLimitsDirty = true
-        }
-    }
-    public var size: CGSize! {
-        didSet {
-            isLimitsDirty = true
-        }
-    }
-    public init(_ data: [Float], size: CGSize, insets: UIEdgeInsets = .zero) {
-        super.init()
-        self.data = data
-        self.size = size
-        self.insets = insets
-        updateRangeLimits()
-    }
-    internal func updateRangeLimits() {
-        // Normalize values in array (i.e. scale to 0-1)...
-        super.updateRangeLimits(data)
-    }
-    internal func makePoints() -> [CGPoint] {
-        // claculate the size
-        return self.makePoints(data: data, size: size)
-    }
-}
+//public class InlineScaledPointsGenerator: ScaledPointsGenerator {
+//    public var data: [Float]! {
+//        didSet {
+//            isLimitsDirty = true
+//        }
+//    }
+//    public var size: CGSize! {
+//        didSet {
+//            isLimitsDirty = true
+//        }
+//    }
+//    public init(_ data: [Float], size: CGSize, insets: UIEdgeInsets = .zero) {
+//        super.init()
+//        self.data = data
+//        self.size = size
+//        self.insets = insets
+//        updateRangeLimits()
+//    }
+//    internal func updateRangeLimits() {
+//        // Normalize values in array (i.e. scale to 0-1)...
+//        super.updateRangeLimits(data)
+//    }
+//    internal func makePoints() -> [CGPoint] {
+//        // claculate the size
+//        return self.makePoints(data: data, size: size)
+//    }
+//}
