@@ -106,31 +106,3 @@ public class ScaledPointsGenerator: PointScalerGeneratorProtocol {
         }
     }
 }
-// MARK: - InlineScaledPointsGenerator
-//public class InlineScaledPointsGenerator: ScaledPointsGenerator {
-//    public var data: [Float]! {
-//        didSet {
-//            isLimitsDirty = true
-//        }
-//    }
-//    public var size: CGSize! {
-//        didSet {
-//            isLimitsDirty = true
-//        }
-//    }
-//    public init(_ data: [Float], size: CGSize, insets: UIEdgeInsets = .zero) {
-//        super.init()
-//        self.data = data
-//        self.size = size
-//        self.insets = insets
-//        updateRangeLimits()
-//    }
-//    internal func updateRangeLimits() {
-//        // Normalize values in array (i.e. scale to 0-1)...
-//        super.updateRangeLimits(data)
-//    }
-//    internal func makePoints() -> [CGPoint] {
-//        // claculate the size
-//        return self.makePoints(data: data, size: size)
-//    }
-//}

@@ -88,7 +88,6 @@ public struct Bezier {
             return path
         }
 }
-
 extension UIBezierPath {
     public class func polygon(frame: CGRect,
                               sides: Int = 5,
@@ -103,41 +102,11 @@ extension UIBezierPath {
             style: style,
             percentInflection: percentInflection)
         bezier.fitPathToRect(frame)
-        bezier.movePathCenterToPoint(CGPoint(x: frame.midX,y: frame.midY))
+        bezier.movePathCenterToPoint(CGPoint(x: frame.midX, y: frame.midY))
         return bezier
     }
 }
-
-func rectGetCenter(_ rect : CGRect)-> CGPoint {
-    return CGPoint(x: rect.midX, y: rect.midY)
-}
-
-func sizeScaleByFactor(_ aSize: CGSize,  factor: CGFloat) -> CGSize {
-    return CGSize(width: aSize.width * factor, height: aSize.height * factor)
-}
-
-func aspectScaleFit(_ sourceSize: CGSize, destRect: CGRect) -> CGFloat {
-    let  destSize = destRect.size
-    let scaleW = destSize.width / sourceSize.width
-    let scaleH = destSize.height / sourceSize.height
-    return min(scaleW, scaleH)
-}
-
-
-func rectAroundCenter(_ center: CGPoint, size: CGSize) -> CGRect {
-    let halfWidth = size.width / 2.0
-    let halfHeight = size.height / 2.0
-    
-    return CGRect(x:center.x - halfWidth, y:center.y - halfHeight, width: size.width, height: size.height)
-}
-
-func rectByFittingRect(sourceRect: CGRect, destinationRect: CGRect) -> CGRect {
-    let aspect = aspectScaleFit(sourceRect.size, destRect: destinationRect)
-    let  targetSize = sizeScaleByFactor(sourceRect.size, factor: aspect)
-    return rectAroundCenter(rectGetCenter(destinationRect), size: targetSize)
-}
-
-// MARK: - UIBezierPath+polygon
+// MARK: - UIBezierPath
 extension UIBezierPath {
     func fitPathToRect( _ destRect: CGRect) {
         let bounds = self.boundingBox()
@@ -145,18 +114,16 @@ extension UIBezierPath {
         let scale = aspectScaleFit(bounds.size, destRect: destRect)
         let newCenter = rectGetCenter(fitRect)
         self.movePathCenterToPoint(newCenter)
-        self.scalePath(sx: scale, sy:  scale)
+        self.scalePath(sx: scale, sy: scale)
     }
-    
     func adjustPathToRect( _ destRect: CGRect) {
         let bounds = self.boundingBox()
         let scaleX = destRect.size.width / bounds.size.width
         let scaleY = destRect.size.height / bounds.size.height
-        let newCenter = CGPoint(x: destRect.midX,y: destRect.midY)
+        let newCenter = CGPoint(x: destRect.midX, y: destRect.midY)
         self.movePathCenterToPoint(newCenter)
         self.scalePath(sx: scaleX, sy: scaleY)
     }
-    
     func applyCenteredPathTransform(_ transform: CGAffineTransform) {
         let center = self.boundingBox().size.center
         var identity = CGAffineTransform.identity
@@ -165,25 +132,20 @@ extension UIBezierPath {
         identity = identity.translatedBy(x: -center.x, y: -center.y)
         self.apply(identity)
     }
-    
     class func pathByApplyingTransform( _ transform: CGAffineTransform) -> UIBezierPath? {
         let copy = self.copy()
         (copy as? UIBezierPath)?.applyCenteredPathTransform(transform)
         return copy as? UIBezierPath
     }
-    
     func rotatePath(_ theta: CGFloat) {
         self.applyCenteredPathTransform(CGAffineTransform(rotationAngle: theta))
     }
-    
     func scalePath( sx: CGFloat, sy: CGFloat) {
         self.applyCenteredPathTransform(CGAffineTransform(scaleX: sx, y: sy))
     }
-    
     func offsetPath(_ offset: CGSize) {
         self.applyCenteredPathTransform( CGAffineTransform(translationX: offset.width, y: offset.height))
     }
-    
     func movePathToPoint( _ destPoint: CGPoint) {
         let bounds = self.boundingBox()
         let p1 = bounds.origin
@@ -192,7 +154,6 @@ extension UIBezierPath {
                             height: p2.y - p1.y)
         self.offsetPath(vector)
     }
-    
     func movePathCenterToPoint(_ destPoint: CGPoint) {
         let bounds = self.boundingBox()
         let firstPoint = bounds.origin

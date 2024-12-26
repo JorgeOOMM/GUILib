@@ -20,7 +20,6 @@
 //  Copyright © 2015 Jorge Ouahbi. All rights reserved.
 //
 // v1.0
-
 import UIKit
 public extension CALayer {
     // MARK: - CALayer Animation Helpers

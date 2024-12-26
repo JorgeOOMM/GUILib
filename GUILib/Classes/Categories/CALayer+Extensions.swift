@@ -7,24 +7,6 @@
 
 import UIKit
 public extension CALayer {
-    func setGlow(with color: UIColor) {
-        masksToBounds = false
-        shadowColor =  color.cgColor
-        shadowOpacity = 1
-        shadowRadius  = 4.0
-        shadowOpacity = 0.9
-        shadowOffset  = CGSize(width: 0, height: 3)
-    }
-    func removeGlow() {
-        masksToBounds = false
-        shadowColor = UIColor.clear.cgColor
-        shadowOpacity = 0
-        shadowRadius  = 0
-        shadowOpacity = 0
-        shadowOffset  = .zero
-    }
-}
-public extension CALayer {
     func add(_ anim: CAAnimation,
              forKey key: String?,
              withCompletion completion: ((Bool) -> Void)?) {
@@ -34,10 +16,9 @@ public extension CALayer {
         add(anim, forKey: key)
     }
 }
-
 public extension CAShapeLayer {
-    
     /// projectLineStrokeGradient
+    ///
     /// - Parameters:
     ///   - internalPoints: [CGPoints]]
     ///   - ctx: CGContext
@@ -47,14 +28,14 @@ public extension CAShapeLayer {
                                            internalPoints: [CGPoint],
                                            lineWidth: CGFloat) {
         ctx.saveGState()
-        for index in 0..<internalPoints.count - 1  {
+        for index in 0..<internalPoints.count - 1 {
             var start: CGPoint = internalPoints[index]
             // The ending point of the axis, in the shading's target coordinate space.
             var end: CGPoint  = internalPoints[index+1]
             // Draw the gradient in the clipped region
-            let hw = lineWidth * 0.5
-            start  = end.projectLine(start, length: hw)
-            end    = start.projectLine(end, length: -hw)
+            let halfLineWidth = lineWidth * 0.5
+            start  = end.projectLine(start, length: halfLineWidth)
+            end    = start.projectLine(end, length: -halfLineWidth)
             ctx.scaleBy(x: self.bounds.size.width,
                         y: self.bounds.size.height )
             ctx.drawLinearGradient(gradient,
@@ -64,18 +45,17 @@ public extension CAShapeLayer {
         }
         ctx.restoreGState()
     }
-    
     func strokeGradient( ctx: CGContext?,
-                                 points: [CGPoint]?,
-                                 color: UIColor,
-                                 lineWidth: CGFloat,
-                                 fadeFactor: CGFloat = 0.4)  {
+                         points: [CGPoint]?,
+                         color: UIColor,
+                         lineWidth: CGFloat,
+                         fadeFactor: CGFloat = 0.4) {
         if  let ctx = ctx {
             let locations =  [0, fadeFactor, 1 - fadeFactor, 1]
             let gradient = CGGradient(colorsSpace: nil,
                                       colors: [UIColor.white.withAlphaComponent(0.1).cgColor,
                                                color.cgColor,
-                                               color.withAlphaComponent(fadeFactor).cgColor ,
+                                               color.withAlphaComponent(fadeFactor).cgColor,
                                                UIColor.white.withAlphaComponent(0.8).cgColor] as CFArray,
                                       locations: locations )!
             // Clip to the path, stroke and enjoy.
@@ -91,17 +71,17 @@ public extension CAShapeLayer {
                 // because users set the start and end points based on the center
                 // of the stroke.
                 if let internalPoints = points {
-                    projectLineStrokeGradient( ctx, gradient: gradient, internalPoints: internalPoints, lineWidth: lineWidth)
+                    projectLineStrokeGradient( ctx,
+                                               gradient: gradient,
+                                               internalPoints: internalPoints,
+                                               lineWidth: lineWidth)
                 }
             }
         }
     }
 }
-
-
 public extension CALayer {
     typealias LayerAnimation = (CALayer) -> CAAnimation
-    
     var isModel: Bool {
         return self == self.model()
     }
@@ -116,8 +96,8 @@ public extension CALayer {
     }
     func isSublayerOfLayer(layer: CALayer) -> Bool {
         var ancestor: CALayer? = self.superlayer
-        while (ancestor != nil) {
-            if (ancestor == layer) {
+        while ancestor != nil {
+            if ancestor == layer {
                 return true
             }
             ancestor = ancestor?.superlayer
@@ -127,7 +107,6 @@ public extension CALayer {
     func sublayerNamed(name: String) -> CALayer? {
         return sublayersNamed(name: name)?.first
     }
-    
     func sublayersNamed(name: String) -> [CALayer]? {
         let sublayers =  self.sublayers?.filter({$0.name?.hasPrefix(name) ?? false})
         return sublayers
@@ -181,7 +160,6 @@ public extension CALayer {
         }
     }
 }
-
 extension CAGradientLayer {
     override public func tint(withColors colors: [UIColor]) {
         sublayers?.recursiveSearch(leafBlock: {

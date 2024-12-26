@@ -7,7 +7,17 @@
 
 import UIKit
 
-extension Date {
+
+extension DateFormatter {
+    var shortMonthSymbols: [String] {
+        return self.monthSymbols.map( {
+            let firstCharIndex = $0.index( $0.startIndex, offsetBy: 3)
+            return String($0[..<firstCharIndex]).capitalized
+        })
+    }
+}
+
+public extension Date {
     var mouthTimeElapsedPercent: CGFloat {
         let date = Date()
         let calendar = Calendar.current
@@ -17,5 +27,14 @@ extension Date {
         let numberOfDaysInMouth = range!.count
         let displacementInSection: CGFloat = CGFloat(1.0) / CGFloat(numberOfDaysInMouth) * CGFloat(currentDay)
         return displacementInSection
+    }
+    static var currentMonth: Int {
+        return Calendar.current.dateComponents([.day, .month, .year], from: Date()).month ?? 0
+    }
+    static var currentDay: Int {
+        return Calendar.current.dateComponents([.day, .month, .year], from: Date()).day ?? 0
+    }
+    static var currentYear: Int {
+        return Calendar.current.dateComponents([.day, .month, .year], from: Date()).year ?? 0
     }
 }

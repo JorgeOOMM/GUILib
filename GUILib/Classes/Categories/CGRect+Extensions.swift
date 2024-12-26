@@ -14,14 +14,12 @@
 //   limitations under the License.
 //
 //
-//  CGSize+Math.swift
+//  CGRect+Estensions.swift
 //
 //  Created by Jorge Ouahbi
 //  Copyright © 2020 Jorge Ouahbi. All rights reserved.
 //
 import UIKit
-
-
 /**
  * CGRect
  */
@@ -31,7 +29,8 @@ import UIKit
  * a + b
  */
 func + (left: CGRect, right: CGPoint) -> CGRect {
-    return CGRect(x: left.origin.x + right.x, y: left.origin.y + right.y, width: left.size.width, height: left.size.height)
+    return CGRect(x: left.origin.x + right.x, y: left.origin.y + right.y,
+                  width: left.size.width, height: left.size.height)
 }
 
 /**
@@ -47,7 +46,8 @@ func += (left: inout CGRect, right: CGPoint) {
  * a - b
  */
 func - (left: CGRect, right: CGPoint) -> CGRect {
-    return CGRect(x: left.origin.x - right.x, y: left.origin.y - right.y, width: left.size.width, height: left.size.height)
+    return CGRect(x: left.origin.x - right.x, y: left.origin.y - right.y,
+                  width: left.size.width, height: left.size.height)
 }
 
 /**
@@ -63,7 +63,8 @@ func -= (left: inout CGRect, right: CGPoint) {
  * a * 2.5
  */
 func * (left: CGRect, right: CGFloat) -> CGRect {
-    return CGRect(x: left.origin.x * right, y: left.origin.y * right, width: left.size.width * right, height: left.size.height * right)
+    return CGRect(x: left.origin.x * right, y: left.origin.y * right,
+                  width: left.size.width * right, height: left.size.height * right)
 }
 
 /**
@@ -78,7 +79,8 @@ func *= (left: inout CGRect, right: CGFloat) {
  * a / 4.0
  */
 func / (left: CGRect, right: CGFloat) -> CGRect {
-    return CGRect(x: left.origin.x / right, y: left.origin.y / right, width: left.size.width / right, height: left.size.height / right)
+    return CGRect(x: left.origin.x / right, y: left.origin.y / right,
+                  width: left.size.width / right, height: left.size.height / right)
 }
 /**
  * ...
@@ -87,6 +89,33 @@ func / (left: CGRect, right: CGFloat) -> CGRect {
 func /= (left: inout CGRect, right: CGFloat) {
     left = left / right
 }
+
+/// Other utils
+
+func rectGetCenter(_ rect: CGRect) -> CGPoint {
+    return CGPoint(x: rect.midX, y: rect.midY)
+}
+func sizeScaleByFactor(_ aSize: CGSize, factor: CGFloat) -> CGSize {
+    return CGSize(width: aSize.width * factor, height: aSize.height * factor)
+}
+func aspectScaleFit(_ sourceSize: CGSize, destRect: CGRect) -> CGFloat {
+    let  destSize = destRect.size
+    let scaleW = destSize.width / sourceSize.width
+    let scaleH = destSize.height / sourceSize.height
+    return min(scaleW, scaleH)
+}
+func rectAroundCenter(_ center: CGPoint, size: CGSize) -> CGRect {
+    let halfWidth = size.width / 2.0
+    let halfHeight = size.height / 2.0
+    return CGRect(x: center.x - halfWidth, y: center.y - halfHeight,
+                  width: size.width, height: size.height)
+}
+func rectByFittingRect(sourceRect: CGRect, destinationRect: CGRect) -> CGRect {
+    let aspect = aspectScaleFit(sourceRect.size, destRect: destinationRect)
+    let  targetSize = sizeScaleByFactor(sourceRect.size, factor: aspect)
+    return rectAroundCenter(rectGetCenter(destinationRect), size: targetSize)
+}
+
 extension CGRect {
     /**
      * Extend CGRect by CGPoint
@@ -97,54 +126,19 @@ extension CGRect {
         if withPoint.x > self.origin.x + self.size.width { self.size.width = withPoint.x - self.origin.x }
         if withPoint.y > self.origin.y + self.size.height { self.size.height = withPoint.y - self.origin.y; }
     }
-    
     /**
      * Get end point of CGRect
      */
-    func max() -> CGPoint {
+    var max: CGPoint {
         return CGPoint(x: self.maxX, y: self.maxY)
     }
-    func min() -> CGPoint {
+    var  min: CGPoint {
         return CGPoint(x: self.minX, y: self.minY)
     }
-    func mid() -> CGPoint {
+    var  mid: CGPoint {
          return CGPoint(x: self.midX, y: self.midY)
      }
 }
-
-
-// swiftlint:enable identifier_name shorthand_operator
-//
-//func rectGetCenter(_ rect : CGRect)-> CGPoint {
-//    return CGPoint(x:rect.midX, y:rect.midY)
-//}
-//func sizeScaleByFactor(_ aSize:CGSize,  factor:CGFloat) -> CGSize {
-//    return CGSize(width:aSize.width * factor, height: aSize.height * factor)
-//}
-//func aspectScaleFit(_ sourceSize:CGSize,  destRect:CGRect) -> CGFloat {
-//    let destSize = destRect.size
-//    let scaleW   = destSize.width / sourceSize.width
-//    let scaleH   = destSize.height / sourceSize.height
-//    return min(scaleW, scaleH)
-//}
-//func rectAroundCenter(_ center:CGPoint, size:CGSize) -> CGRect {
-//    let halfWidth = size.width / 2.0
-//    let halfHeight = size.height / 2.0
-//    return CGRect(x:center.x - halfWidth, y:center.y - halfHeight, width:size.width, height:size.height)
-//}
-//func rectByFittingRect(sourceRect:CGRect, destinationRect:CGRect) -> CGRect {
-//    let aspect = aspectScaleFit(sourceRect.size, destRect: destinationRect)
-//    let  targetSize = sizeScaleByFactor(sourceRect.size, factor: aspect)
-//    return rectAroundCenter(rectGetCenter(destinationRect), size: targetSize)
-//}
-
-//extension Float {
-//    func roundToNearestValue(value: Float) -> Float {
-//        let mask = value - 1.0
-//        return  self + (-self + mask)
-//    }
-//}
-
 extension CGRect: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.origin.x)
@@ -153,5 +147,3 @@ extension CGRect: Hashable {
         hasher.combine(self.size.height)
     }
 }
-// swiftlint:enabled file_length
-// swiftlint:enabled type_body_length
